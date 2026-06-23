@@ -4,7 +4,7 @@ import { pool, dbRowToTraining, dbRowToEnrollment, isDbConnected } from "@/app/l
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
-    const driverId = searchParams.get("driverId");
+    const userId = searchParams.get("userId");
 
     if (!pool || !(await isDbConnected())) {
       return NextResponse.json({ error: "Database not connected" }, { status: 500 });
@@ -16,10 +16,10 @@ export async function GET(req: NextRequest) {
 
     const trainings = trainingsResult.rows.map(dbRowToTraining);
 
-    if (driverId) {
+    if (userId) {
       const enrollmentsResult = await pool.query(
-        "SELECT * FROM enrollments WHERE driver_id = $1",
-        [driverId]
+        "SELECT * FROM enrollments WHERE user_id = $1",
+        [userId]
       );
       const enrollments = enrollmentsResult.rows.map(dbRowToEnrollment);
 

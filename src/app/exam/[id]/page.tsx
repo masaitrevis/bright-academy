@@ -65,7 +65,7 @@ export default function ExamPage() {
     setSubmitting(true);
     try {
       const token = localStorage.getItem("token");
-      const driver = JSON.parse(localStorage.getItem("driver") || "{}");
+      const user = JSON.parse(localStorage.getItem("user") || "{}");
 
       const formattedAnswers = Object.entries(answers).map(([questionId, selectedAnswer]) => ({
         questionId: parseInt(questionId),
@@ -79,7 +79,7 @@ export default function ExamPage() {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          driverId: driver.id,
+          userId: user.id,
           answers: formattedAnswers,
         }),
       });

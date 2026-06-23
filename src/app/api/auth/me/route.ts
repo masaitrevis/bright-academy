@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { pool, isDbConnected } from "@/app/lib/server-db";
+import { pool, dbRowToUser, isDbConnected } from "@/app/lib/server-db";
 
 export async function GET(req: NextRequest) {
   try {
@@ -12,9 +12,7 @@ export async function GET(req: NextRequest) {
 
     if (pool && (await isDbConnected())) {
       const sessionResult = await pool.query(
-        `SELECT s.*, d.* FROM sessions s
-         JOIN drivers d ON s.driver_id = d.id
-         WHERE s.token = $1 AND s.expires_at > NOW()`,
+        "SELECT * FROM sessions WHERE token = $1 AND expires_at > NOW()",
         [token]
       );
 
@@ -22,16 +20,31 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({ error: "Session expired" }, { status: 401 });
       }
 
-      const row = sessionResult.rows[0];
-      const driver = {
-        id: row.driver_id,
-        fullName: row.full_name,
-        email: row.email,
-        phone: row.phone,
-        classification: row.classification,
-      };
+      const userId = sessionResult.rows[0].user_id;
 
-      return NextResponse.json({ success: true, driver });
+      // Try academy_users first
+      const academyResult = await pool.query(
+        "SELECT * FROM academy_users WHERE id = $1",
+        [userId]
+      );
+
+      if (academyResult.rows.length > 0) {
+        const user = dbRowToUser(academyResult.rows[0], "academy");
+        return NextResponse.json({ success: true, user });
+      }
+
+      // Fall back to drivers table
+      const driverResult = await pool.query(
+        "SELECT * FROM drivers WHERE id = $1",
+        [userId]
+      );
+
+      if (driverResult.rows.length > 0) {
+        const user = dbRowToUser(driverResult.rows[0], "driver");
+        return NextResponse.json({ success: true, user });
+      }
+
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
     } else {
       return NextResponse.json({ error: "Database not connected" }, { status: 500 });
     }

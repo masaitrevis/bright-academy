@@ -32,9 +32,9 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     const { id } = await params;
     const trainingId = parseInt(id);
     const body = await req.json();
-    const { driverId, answers } = body;
+    const { userId, answers } = body;
 
-    if (!driverId || !answers || !Array.isArray(answers)) {
+    if (!userId || !answers || !Array.isArray(answers)) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
@@ -44,8 +44,8 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
 
     // Get enrollment
     const enrollmentResult = await pool.query(
-      "SELECT * FROM enrollments WHERE driver_id = $1 AND training_id = $2",
-      [driverId, trainingId]
+      "SELECT * FROM enrollments WHERE user_id = $1 AND training_id = $2",
+      [userId, trainingId]
     );
 
     if (enrollmentResult.rows.length === 0) {

@@ -30,35 +30,35 @@ interface Training {
   } | null;
 }
 
-interface Driver {
+interface UserData {
   id: string;
   fullName: string;
   email: string;
-  classification: string;
+  classification: string | null;
 }
 
 export default function DashboardPage() {
   const router = useRouter();
-  const [driver, setDriver] = useState<Driver | null>(null);
+  const [user, setUser] = useState<UserData | null>(null);
   const [trainings, setTrainings] = useState<Training[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    const driverData = localStorage.getItem("driver");
+    const userData = localStorage.getItem("user");
 
-    if (!token || !driverData) {
+    if (!token || !userData) {
       router.push("/login");
       return;
     }
 
-    setDriver(JSON.parse(driverData));
-    fetchTrainings(token, JSON.parse(driverData).id);
+    setUser(JSON.parse(userData));
+    fetchTrainings(token, JSON.parse(userData).id);
   }, [router]);
 
-  const fetchTrainings = async (token: string, driverId: string) => {
+  const fetchTrainings = async (token: string, userId: string) => {
     try {
-      const res = await fetch(`/api/trainings?driverId=${driverId}`, {
+      const res = await fetch(`/api/trainings?userId=${userId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -74,7 +74,7 @@ export default function DashboardPage() {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("driver");
+    localStorage.removeItem("user");
     router.push("/login");
   };
 
@@ -99,7 +99,12 @@ export default function DashboardPage() {
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2 text-sm text-gray-600">
                 <User className="w-4 h-4" />
-                <span>{driver?.fullName}</span>
+                <span>{user?.fullName}</span>
+                {user?.classification && (
+                  <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">
+                    {user.classification}
+                  </span>
+                )}
               </div>
               <button
                 onClick={handleLogout}

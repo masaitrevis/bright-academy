@@ -6,7 +6,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     const { id } = await params;
     const trainingId = parseInt(id);
     const { searchParams } = new URL(req.url);
-    const driverId = searchParams.get("driverId");
+    const userId = searchParams.get("userId");
 
     if (!pool || !(await isDbConnected())) {
       return NextResponse.json({ error: "Database not connected" }, { status: 500 });
@@ -27,10 +27,10 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     // Questions are served separately by the /api/trainings/[id]/exam endpoint.
 
     let enrollment = null;
-    if (driverId) {
+    if (userId) {
       const enrollmentResult = await pool.query(
-        "SELECT * FROM enrollments WHERE driver_id = $1 AND training_id = $2",
-        [driverId, trainingId]
+        "SELECT * FROM enrollments WHERE user_id = $1 AND training_id = $2",
+        [userId, trainingId]
       );
       if (enrollmentResult.rows.length > 0) {
         enrollment = dbRowToEnrollment(enrollmentResult.rows[0]);

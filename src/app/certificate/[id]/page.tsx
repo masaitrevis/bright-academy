@@ -23,22 +23,22 @@ export default function CertificatePage() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    const driver = JSON.parse(localStorage.getItem("driver") || "{}");
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
 
-    if (!token || !driver.id) return;
+    if (!token || !user.id) return;
 
-    fetchCertificate(token, driver);
+    fetchCertificate(token, user);
   }, [params.id]);
 
-  const fetchCertificate = async (token: string, driver: any) => {
+  const fetchCertificate = async (token: string, user: any) => {
     try {
-      const res = await fetch(`/api/trainings/${params.id}?driverId=${driver.id}`, {
+      const res = await fetch(`/api/trainings/${params.id}?userId=${user.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
       if (data.success && data.training.enrollment?.passed) {
         setCertificate({
-          driverName: driver.fullName,
+          userName: user.fullName,
           trainingTitle: data.training.title,
           trainingCode: data.training.code,
           completedAt: data.training.enrollment.completedAt || new Date().toISOString(),
@@ -123,7 +123,7 @@ export default function CertificatePage() {
             </div>
 
             <div className="my-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">{certificate.driverName}</h2>
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">{certificate.userName}</h2>
               <p className="text-lg text-gray-600">has successfully completed</p>
               <h3 className="text-2xl font-bold text-blue-800 mt-4">{certificate.trainingTitle}</h3>
               <p className="text-sm text-gray-500 mt-2">Course Code: {certificate.trainingCode}</p>

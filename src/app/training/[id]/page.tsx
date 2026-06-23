@@ -40,20 +40,20 @@ export default function TrainingPage() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    const driver = localStorage.getItem("driver");
+    const user = localStorage.getItem("user");
 
-    if (!token || !driver) {
+    if (!token || !user) {
       router.push("/login");
       return;
     }
 
-    const driverId = JSON.parse(driver).id;
-    fetchTraining(token, driverId);
+    const userId = JSON.parse(user).id;
+    fetchTraining(token, userId);
   }, [params.id, router]);
 
-  const fetchTraining = async (token: string, driverId: string) => {
+  const fetchTraining = async (token: string, userId: string) => {
     try {
-      const res = await fetch(`/api/trainings/${params.id}?driverId=${driverId}`, {
+      const res = await fetch(`/api/trainings/${params.id}?userId=${userId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -71,7 +71,7 @@ export default function TrainingPage() {
     setPaying(true);
     try {
       const token = localStorage.getItem("token");
-      const driver = JSON.parse(localStorage.getItem("driver") || "{}");
+      const user = JSON.parse(localStorage.getItem("user") || "{}");
 
       const res = await fetch("/api/mpesa/stk", {
         method: "POST",
@@ -106,7 +106,7 @@ export default function TrainingPage() {
   const enrollAfterPayment = async (reference: string) => {
     try {
       const token = localStorage.getItem("token");
-      const driver = JSON.parse(localStorage.getItem("driver") || "{}");
+      const user = JSON.parse(localStorage.getItem("user") || "{}");
 
       const res = await fetch("/api/enrollments", {
         method: "POST",
@@ -115,7 +115,7 @@ export default function TrainingPage() {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          driverId: driver.id,
+          userId: user.id,
           trainingId: training?.id,
           paymentReference: reference,
         }),

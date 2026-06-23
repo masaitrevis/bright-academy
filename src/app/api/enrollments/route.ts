@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { pool, dbRowToEnrollment, isDbConnected } from "@/app/lib/server-db";
 
-async function verifyDriverToken(req: NextRequest): Promise<{ valid: boolean; driverId?: number }> {
+async function verifyUserToken(req: NextRequest): Promise<{ valid: boolean; userId?: number }> {
   const authHeader = req.headers.get("authorization");
   if (!authHeader?.startsWith("Bearer ")) {
     return { valid: false };
@@ -13,7 +13,7 @@ async function verifyDriverToken(req: NextRequest): Promise<{ valid: boolean; dr
   }
 
   const sessionResult = await pool.query(
-    "SELECT driver_id FROM sessions WHERE token = $1 AND expires_at > NOW()",
+    "SELECT user_id FROM sessions WHERE token = $1 AND expires_at > NOW()",
     [token]
   );
 
@@ -21,25 +21,25 @@ async function verifyDriverToken(req: NextRequest): Promise<{ valid: boolean; dr
     return { valid: false };
   }
 
-  return { valid: true, driverId: sessionResult.rows[0].driver_id };
+  return { valid: true, userId: sessionResult.rows[0].user_id };
 }
 
 export async function POST(req: NextRequest) {
   try {
-    const { valid, driverId: authDriverId } = await verifyDriverToken(req);
+    const { valid, userId: authUserId } = await verifyUserToken(req);
     if (!valid) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const body = await req.json();
-    const { driverId, trainingId, paymentReference } = body;
+    const { userId, trainingId, paymentReference } = body;
 
-    if (!driverId || !trainingId) {
-      return NextResponse.json({ error: "Missing driverId or trainingId" }, { status: 400 });
+    if (!userId || !trainingId) {
+      return NextResponse.json({ error: "Missing userId or trainingId" }, { status: 400 });
     }
 
-    if (driverId !== authDriverId) {
-      return NextResponse.json({ error: "Unauthorized — driver mismatch" }, { status: 403 });
+    if (parseInt(userId) !== authUserId) {
+      return NextResponse.json({ error: "Unauthorized — user mismatch" }, { status: 403 });
     }
 
     if (!pool || !(await isDbConnected())) {
@@ -48,8 +48,8 @@ export async function POST(req: NextRequest) {
 
     // Check if already enrolled
     const existing = await pool.query(
-      "SELECT * FROM enrollments WHERE driver_id = $1 AND training_id = $2",
-      [driverId, trainingId]
+      "SELECT * FROM enrollments WHERE user_id = $1 AND training_id = $2",
+      [userId, trainingId]
     );
 
     if (existing.rows.length > 0) {
@@ -67,9 +67,9 @@ export async function POST(req: NextRequest) {
 
     // Create new enrollment
     const result = await pool.query(
-      `INSERT INTO enrollments (driver_id, training_id, paid, payment_reference)
+      `INSERT INTO enrollments (user_id, training_id, paid, payment_reference)
        VALUES ($1, $2, $3, $4) RETURNING *`,
-      [driverId, trainingId, !!paymentReference, paymentReference || null]
+      [userId, trainingId, !!paymentReference, paymentReference || null]
     );
 
     const enrollment = dbRowToEnrollment(result.rows[0]);

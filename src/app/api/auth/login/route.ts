@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { pool, dbRowToDriver, isDbConnected } from "@/app/lib/server-db";
+import { pool, dbRowToUser, findUserByEmail, isDbConnected } from "@/app/lib/server-db";
 import bcrypt from "bcryptjs";
 
 export async function POST(req: NextRequest) {
@@ -15,20 +15,17 @@ export async function POST(req: NextRequest) {
     }
 
     if (pool && (await isDbConnected())) {
-      const result = await pool.query(
-        "SELECT * FROM drivers WHERE email = $1",
-        [email]
-      );
+      const found = await findUserByEmail(email);
 
-      if (result.rows.length === 0) {
+      if (!found) {
         return NextResponse.json(
           { error: "Invalid email or password" },
           { status: 401 }
         );
       }
 
-      const driver = result.rows[0];
-      const valid = await bcrypt.compare(password, driver.password_hash);
+      const { user, source } = found;
+      const valid = await bcrypt.compare(password, user.password_hash);
 
       if (!valid) {
         return NextResponse.json(
@@ -41,17 +38,16 @@ export async function POST(req: NextRequest) {
       const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 
       await pool.query(
-        "INSERT INTO sessions (driver_id, token, expires_at) VALUES ($1, $2, $3)",
-        [driver.id, token, expiresAt]
+        "INSERT INTO sessions (user_id, token, expires_at) VALUES ($1, $2, $3)",
+        [user.id, token, expiresAt]
       );
 
-      const safeDriver = dbRowToDriver(driver);
-      delete (safeDriver as any).passwordHash;
+      const safeUser = dbRowToUser(user, source);
 
       return NextResponse.json({
         success: true,
         token,
-        driver: safeDriver,
+        user: safeUser,
       });
     } else {
       return NextResponse.json(

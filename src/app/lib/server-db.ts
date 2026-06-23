@@ -30,7 +30,18 @@ export async function initDb() {
   try {
     const client = await pool.connect();
 
-    // Drivers table (shared with Bright Elite)
+    // Academy users table (standalone users, not from Bright Elite)
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS academy_users (
+        id SERIAL PRIMARY KEY,
+        full_name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) UNIQUE NOT NULL,
+        phone VARCHAR(50),
+        password_hash VARCHAR(255) NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
     await client.query(`
       CREATE TABLE IF NOT EXISTS drivers (
         id SERIAL PRIMARY KEY,
@@ -95,7 +106,7 @@ export async function initDb() {
     await client.query(`
       CREATE TABLE IF NOT EXISTS enrollments (
         id SERIAL PRIMARY KEY,
-        driver_id INTEGER NOT NULL,
+        user_id INTEGER NOT NULL,
         training_id INTEGER REFERENCES trainings(id) ON DELETE CASCADE,
         paid BOOLEAN DEFAULT FALSE,
         payment_reference VARCHAR(255),
@@ -108,15 +119,15 @@ export async function initDb() {
         completed_at TIMESTAMP,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        UNIQUE(driver_id, training_id)
+        UNIQUE(user_id, training_id)
       )
     `);
 
-    // Sessions table (same as Bright Elite)
+    // Sessions table
     await client.query(`
       CREATE TABLE IF NOT EXISTS sessions (
         id SERIAL PRIMARY KEY,
-        driver_id INTEGER NOT NULL,
+        user_id INTEGER NOT NULL,
         token VARCHAR(255) UNIQUE NOT NULL,
         expires_at TIMESTAMP NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -186,10 +197,71 @@ export function dbRowToQuestion(row: any) {
   };
 }
 
+export function dbRowToUser(row: any, source: "academy" | "driver" = "academy") {
+  return {
+    id: row.id?.toString(),
+    fullName: row.full_name,
+    email: row.email,
+    phone: row.phone,
+    classification: source === "driver" ? row.classification : null,
+    createdAt: row.created_at,
+  };
+}
+
+// Find user across both academy_users and drivers tables
+export async function findUserByEmail(email: string): Promise<{ user: any; source: "academy" | "driver" } | null> {
+  if (!pool) return null;
+
+  // Try academy_users first
+  const academyResult = await pool.query(
+    "SELECT * FROM academy_users WHERE email = $1",
+    [email]
+  );
+  if (academyResult.rows.length > 0) {
+    return { user: academyResult.rows[0], source: "academy" };
+  }
+
+  // Fall back to drivers table
+  const driverResult = await pool.query(
+    "SELECT * FROM drivers WHERE email = $1",
+    [email]
+  );
+  if (driverResult.rows.length > 0) {
+    return { user: driverResult.rows[0], source: "driver" };
+  }
+
+  return null;
+}
+
+// Find user by ID across both tables
+export async function findUserById(id: number): Promise<{ user: any; source: "academy" | "driver" } | null> {
+  if (!pool) return null;
+
+  // Try academy_users first
+  const academyResult = await pool.query(
+    "SELECT * FROM academy_users WHERE id = $1",
+    [id]
+  );
+  if (academyResult.rows.length > 0) {
+    return { user: academyResult.rows[0], source: "academy" };
+  }
+
+  // Fall back to drivers table
+  const driverResult = await pool.query(
+    "SELECT * FROM drivers WHERE id = $1",
+    [id]
+  );
+  if (driverResult.rows.length > 0) {
+    return { user: driverResult.rows[0], source: "driver" };
+  }
+
+  return null;
+}
+
 export function dbRowToEnrollment(row: any) {
   return {
     id: row.id,
-    driverId: row.driver_id,
+    userId: row.user_id,
     trainingId: row.training_id,
     paid: row.paid,
     paymentReference: row.payment_reference,
