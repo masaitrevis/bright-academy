@@ -103,22 +103,23 @@ export default function AdminPage() {
     explanation: "",
   });
 
-  const adminToken = typeof window !== "undefined" ? localStorage.getItem("admin_token") : null;
+  const [adminToken, setAdminToken] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!adminToken) {
+    const token = localStorage.getItem("admin_token");
+    if (!token) {
       router.push("/admin/login");
       return;
     }
-    fetchTrainings();
-  }, [router, adminToken]);
+    setAdminToken(token);
+    fetchTrainings(token);
+  }, [router]);
 
-  const fetchTrainings = async () => {
-    if (!adminToken) return;
+  const fetchTrainings = async (token: string) => {
     try {
       setLoading(true);
       const res = await fetch("/api/admin/trainings", {
-        headers: { Authorization: `Bearer ${adminToken}` },
+        headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
       if (data.success) {

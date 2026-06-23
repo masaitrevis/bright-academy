@@ -86,12 +86,21 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     const attempts = enrollment.exam_attempts + 1;
     const locked = !passed && attempts >= enrollment.max_attempts;
 
-    await pool.query(
-      `UPDATE enrollments 
-       SET exam_attempts = $1, score = $2, passed = $3, updated_at = NOW()
-       WHERE id = $4`,
-      [attempts, score, passed, enrollment.id]
-    );
+    if (passed) {
+      await pool.query(
+        `UPDATE enrollments 
+         SET exam_attempts = $1, score = $2, passed = $3, completed_at = NOW(), updated_at = NOW()
+         WHERE id = $4`,
+        [attempts, score, passed, enrollment.id]
+      );
+    } else {
+      await pool.query(
+        `UPDATE enrollments 
+         SET exam_attempts = $1, score = $2, passed = $3, updated_at = NOW()
+         WHERE id = $4`,
+        [attempts, score, passed, enrollment.id]
+      );
+    }
 
     return NextResponse.json({
       success: true,

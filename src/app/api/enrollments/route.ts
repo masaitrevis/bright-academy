@@ -1,13 +1,45 @@
 import { NextRequest, NextResponse } from "next/server";
 import { pool, dbRowToEnrollment, isDbConnected } from "@/app/lib/server-db";
 
+async function verifyDriverToken(req: NextRequest): Promise<{ valid: boolean; driverId?: number }> {
+  const authHeader = req.headers.get("authorization");
+  if (!authHeader?.startsWith("Bearer ")) {
+    return { valid: false };
+  }
+  const token = authHeader.substring(7);
+
+  if (!pool || !(await isDbConnected())) {
+    return { valid: false };
+  }
+
+  const sessionResult = await pool.query(
+    "SELECT driver_id FROM sessions WHERE token = $1 AND expires_at > NOW()",
+    [token]
+  );
+
+  if (sessionResult.rows.length === 0) {
+    return { valid: false };
+  }
+
+  return { valid: true, driverId: sessionResult.rows[0].driver_id };
+}
+
 export async function POST(req: NextRequest) {
   try {
+    const { valid, driverId: authDriverId } = await verifyDriverToken(req);
+    if (!valid) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const body = await req.json();
     const { driverId, trainingId, paymentReference } = body;
 
     if (!driverId || !trainingId) {
       return NextResponse.json({ error: "Missing driverId or trainingId" }, { status: 400 });
+    }
+
+    if (driverId !== authDriverId) {
+      return NextResponse.json({ error: "Unauthorized — driver mismatch" }, { status: 403 });
     }
 
     if (!pool || !(await isDbConnected())) {

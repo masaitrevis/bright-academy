@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { pool, dbRowToTraining, dbRowToQuestion, dbRowToEnrollment, isDbConnected } from "@/app/lib/server-db";
+import { pool, dbRowToTraining, dbRowToEnrollment, isDbConnected } from "@/app/lib/server-db";
 
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -13,7 +13,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     }
 
     const trainingResult = await pool.query(
-      "SELECT * FROM trainings WHERE id = $1",
+      "SELECT * FROM trainings WHERE id = $1 AND status = 'active'",
       [trainingId]
     );
 
@@ -23,12 +23,8 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
 
     const training = dbRowToTraining(trainingResult.rows[0]);
 
-    const questionsResult = await pool.query(
-      "SELECT * FROM questions WHERE training_id = $1",
-      [trainingId]
-    );
-
-    const questions = questionsResult.rows.map(dbRowToQuestion);
+    // Do NOT include questions in the public response — they leak correct answers.
+    // Questions are served separately by the /api/trainings/[id]/exam endpoint.
 
     let enrollment = null;
     if (driverId) {
@@ -45,7 +41,6 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
       success: true,
       training: {
         ...training,
-        questions,
         enrollment,
       },
     });

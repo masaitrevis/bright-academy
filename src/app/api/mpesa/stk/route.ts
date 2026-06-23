@@ -19,10 +19,12 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const baseUrl = process.env.MPESA_BASE_URL || "https://sandbox.safaricom.co.ke";
+
     // Get access token
     const auth = Buffer.from(`${consumerKey}:${consumerSecret}`).toString("base64");
     const tokenRes = await fetch(
-      "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials",
+      `${baseUrl}/oauth/v1/generate?grant_type=client_credentials`,
       {
         headers: { Authorization: `Basic ${auth}` },
       }
@@ -38,7 +40,7 @@ export async function POST(req: NextRequest) {
     const password = Buffer.from(`${shortcode}${passkey}${timestamp}`).toString("base64");
 
     const stkRes = await fetch(
-      "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest",
+      `${baseUrl}/mpesa/stkpush/v1/processrequest`,
       {
         method: "POST",
         headers: {

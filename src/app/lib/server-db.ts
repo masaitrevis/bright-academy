@@ -30,6 +30,36 @@ export async function initDb() {
   try {
     const client = await pool.connect();
 
+    // Drivers table (shared with Bright Elite)
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS drivers (
+        id SERIAL PRIMARY KEY,
+        full_name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) UNIQUE NOT NULL,
+        phone VARCHAR(50),
+        national_id VARCHAR(50),
+        date_of_birth DATE,
+        location VARCHAR(255),
+        license_number VARCHAR(100),
+        license_category VARCHAR(100),
+        license_expiry DATE,
+        years_experience INTEGER,
+        vehicle_types JSONB DEFAULT '[]',
+        accident_history BOOLEAN DEFAULT FALSE,
+        accident_details TEXT,
+        has_defensive_driving BOOLEAN DEFAULT FALSE,
+        has_first_aid BOOLEAN DEFAULT FALSE,
+        languages JSONB DEFAULT '[]',
+        employment_status VARCHAR(50),
+        desired_training JSONB DEFAULT '[]',
+        classification VARCHAR(100),
+        recommended_trainings JSONB DEFAULT '[]',
+        next_steps JSONB DEFAULT '[]',
+        password_hash VARCHAR(255) NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
     // Trainings table
     await client.query(`
       CREATE TABLE IF NOT EXISTS trainings (
@@ -56,7 +86,8 @@ export async function initDb() {
         options JSONB NOT NULL,
         correct_answer INTEGER NOT NULL,
         explanation TEXT,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `);
 
