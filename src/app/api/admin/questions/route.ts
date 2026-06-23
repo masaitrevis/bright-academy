@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { pool, dbRowToQuestion, isDbConnected } from "@/app/lib/server-db";
+import { requireAdmin } from "@/app/lib/admin-auth";
 
 // Add question to training
 export async function POST(req: NextRequest) {
+  const unauthorized = requireAdmin(req);
+  if (unauthorized) return unauthorized;
   try {
     const body = await req.json();
     const { trainingId, question, options, correctAnswer, explanation } = body;
@@ -30,6 +33,8 @@ export async function POST(req: NextRequest) {
 
 // Get questions for a training
 export async function GET(req: NextRequest) {
+  const unauthorized = requireAdmin(req);
+  if (unauthorized) return unauthorized;
   try {
     const { searchParams } = new URL(req.url);
     const trainingId = searchParams.get("trainingId");

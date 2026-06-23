@@ -103,26 +103,29 @@ export default function AdminPage() {
     explanation: "",
   });
 
-  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  const adminToken = typeof window !== "undefined" ? localStorage.getItem("admin_token") : null;
 
   useEffect(() => {
-    if (!token) {
-      router.push("/login");
+    if (!adminToken) {
+      router.push("/admin/login");
       return;
     }
     fetchTrainings();
-  }, [router, token]);
+  }, [router, adminToken]);
 
   const fetchTrainings = async () => {
-    if (!token) return;
+    if (!adminToken) return;
     try {
       setLoading(true);
       const res = await fetch("/api/admin/trainings", {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${adminToken}` },
       });
       const data = await res.json();
       if (data.success) {
         setTrainings(data.trainings);
+      } else if (res.status === 401) {
+        localStorage.removeItem("admin_token");
+        router.push("/admin/login");
       }
     } catch (error) {
       console.error("Failed to fetch trainings:", error);
@@ -133,7 +136,7 @@ export default function AdminPage() {
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!token) return;
+    if (!adminToken) return;
 
     try {
       setSaving(true);
@@ -141,7 +144,7 @@ export default function AdminPage() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${adminToken}`,
         },
         body: JSON.stringify({
           ...formData,
@@ -192,14 +195,17 @@ export default function AdminPage() {
     setModules(training.content || []);
 
     // Fetch questions
-    if (token) {
+    if (adminToken) {
       try {
         const res = await fetch(`/api/admin/trainings/${training.id}/questions`, {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `Bearer ${adminToken}` },
         });
         const data = await res.json();
         if (data.success) {
           setQuestions(data.questions);
+        } else if (res.status === 401) {
+          localStorage.removeItem("admin_token");
+          router.push("/admin/login");
         }
       } catch (err) {
         console.error("Failed to fetch questions:", err);
@@ -212,7 +218,7 @@ export default function AdminPage() {
 
   const handleUpdateMetadata = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!token || !selectedTraining) return;
+    if (!adminToken || !selectedTraining) return;
 
     try {
       setSaving(true);
@@ -220,7 +226,7 @@ export default function AdminPage() {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${adminToken}`,
         },
         body: JSON.stringify({
           id: selectedTraining.id,
@@ -248,12 +254,12 @@ export default function AdminPage() {
 
   const handleDeleteTraining = async (id: number) => {
     if (!confirm("Are you sure you want to delete this training?")) return;
-    if (!token) return;
+    if (!adminToken) return;
 
     try {
       const res = await fetch(`/api/admin/trainings?id=${id}`, {
         method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${adminToken}` },
       });
       const data = await res.json();
       if (data.success) {
@@ -272,7 +278,7 @@ export default function AdminPage() {
 
   const handleAddModule = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!token || !selectedTraining) return;
+    if (!adminToken || !selectedTraining) return;
 
     const newModuleWithId: ContentModule = {
       ...newModule,
@@ -286,7 +292,7 @@ export default function AdminPage() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${adminToken}`,
         },
         body: JSON.stringify({ modules: updatedModules }),
       });
@@ -311,12 +317,12 @@ export default function AdminPage() {
 
   const handleDeleteModule = async (moduleId: string) => {
     if (!confirm("Delete this module?")) return;
-    if (!token || !selectedTraining) return;
+    if (!adminToken || !selectedTraining) return;
 
     try {
       const res = await fetch(`/api/admin/trainings/${selectedTraining.id}/content?moduleId=${moduleId}`, {
         method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${adminToken}` },
       });
       const data = await res.json();
       if (data.success) {
@@ -334,7 +340,7 @@ export default function AdminPage() {
 
   const handleAddQuestion = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!token || !selectedTraining) return;
+    if (!adminToken || !selectedTraining) return;
 
     const options = [newQuestion.option0, newQuestion.option1, newQuestion.option2, newQuestion.option3];
 
@@ -344,7 +350,7 @@ export default function AdminPage() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${adminToken}`,
         },
         body: JSON.stringify({
           question: newQuestion.question,
@@ -378,12 +384,12 @@ export default function AdminPage() {
 
   const handleDeleteQuestion = async (questionId: number) => {
     if (!confirm("Delete this question?")) return;
-    if (!token || !selectedTraining) return;
+    if (!adminToken || !selectedTraining) return;
 
     try {
       const res = await fetch(`/api/admin/trainings/${selectedTraining.id}/questions?questionId=${questionId}`, {
         method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${adminToken}` },
       });
       const data = await res.json();
       if (data.success) {

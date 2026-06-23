@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { pool, dbRowToTraining, isDbConnected } from "@/app/lib/server-db";
+import { requireAdmin } from "@/app/lib/admin-auth";
 
 // Create training (admin only)
 export async function POST(req: NextRequest) {
+  const unauthorized = requireAdmin(req);
+  if (unauthorized) return unauthorized;
   try {
     const body = await req.json();
     const { title, code, description, price, duration, level, content } = body;
@@ -29,7 +32,9 @@ export async function POST(req: NextRequest) {
 }
 
 // Get all trainings (admin)
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const unauthorized = requireAdmin(req);
+  if (unauthorized) return unauthorized;
   try {
     if (!pool || !(await isDbConnected())) {
       return NextResponse.json({ error: "Database not connected" }, { status: 500 });
@@ -45,6 +50,8 @@ export async function GET() {
 
 // Update training metadata
 export async function PUT(req: NextRequest) {
+  const unauthorized = requireAdmin(req);
+  if (unauthorized) return unauthorized;
   try {
     const body = await req.json();
     const { id, title, code, description, price, duration, level, status } = body;
@@ -91,6 +98,8 @@ export async function PUT(req: NextRequest) {
 
 // Delete training
 export async function DELETE(req: NextRequest) {
+  const unauthorized = requireAdmin(req);
+  if (unauthorized) return unauthorized;
   try {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");

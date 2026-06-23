@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { pool, dbRowToQuestion, isDbConnected } from "@/app/lib/server-db";
+import { requireAdmin } from "@/app/lib/admin-auth";
 
 // GET questions for a training
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const unauthorized = requireAdmin(req);
+  if (unauthorized) return unauthorized;
   try {
     const { id } = await params;
     const trainingId = parseInt(id);
@@ -25,6 +28,8 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
 
 // POST add a question to a training
 export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const unauthorized = requireAdmin(req);
+  if (unauthorized) return unauthorized;
   try {
     const { id } = await params;
     const trainingId = parseInt(id);
@@ -62,6 +67,8 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
 
 // DELETE a question
 export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const unauthorized = requireAdmin(req);
+  if (unauthorized) return unauthorized;
   try {
     const { id } = await params;
     const trainingId = parseInt(id);

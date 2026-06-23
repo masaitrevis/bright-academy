@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { pool, isDbConnected } from "@/app/lib/server-db";
+import { requireAdmin } from "@/app/lib/admin-auth";
 
 interface ContentModule {
   id: string;
@@ -10,6 +11,8 @@ interface ContentModule {
 
 // GET content modules for a training
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const unauthorized = requireAdmin(req);
+  if (unauthorized) return unauthorized;
   try {
     const { id } = await params;
     const trainingId = parseInt(id);
@@ -37,6 +40,8 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
 
 // POST add or update content modules
 export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const unauthorized = requireAdmin(req);
+  if (unauthorized) return unauthorized;
   try {
     const { id } = await params;
     const trainingId = parseInt(id);
@@ -75,6 +80,8 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
 
 // DELETE a content module by its id
 export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const unauthorized = requireAdmin(req);
+  if (unauthorized) return unauthorized;
   try {
     const { id } = await params;
     const trainingId = parseInt(id);
