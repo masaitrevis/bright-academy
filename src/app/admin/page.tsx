@@ -103,6 +103,12 @@ export default function AdminPage() {
     explanation: "",
   });
 
+  // Bulk import state
+  const [bulkImportView, setBulkImportView] = useState<"single" | "bulk">("single");
+  const [bulkImportText, setBulkImportText] = useState("");
+  const [bulkParsedQuestions, setBulkParsedQuestions] = useState<any[]>([]);
+  const [bulkImportErrors, setBulkImportErrors] = useState<string[]>([]);
+
   const [adminToken, setAdminToken] = useState<string | null>(null);
 
   useEffect(() => {
@@ -400,6 +406,144 @@ export default function AdminPage() {
       }
     } catch (error: any) {
       alert(error.message || "Error");
+    }
+  };
+
+  // Bulk import parsing logic
+  function parseBulkQuestions(text: string): { questions: Array<{ question: string; options: string[]; correctAnswer: number; explanation: string }>; errors: string[] } {
+    const errors: string[] = [];
+
+    // Try JSON first
+    try {
+      const parsed = JSON.parse(text);
+      if (Array.isArray(parsed)) {
+        const questions: Array<{ question: string; options: string[]; correctAnswer: number; explanation: string }> = [];
+        for (let i = 0; i < parsed.length; i++) {
+          const item = parsed[i];
+          if (!item.question || !Array.isArray(item.options) || item.correctAnswer === undefined) {
+            errors.push(`Item ${i + 1}: missing question, options, or correctAnswer`);
+            continue;
+          }
+          questions.push({
+            question: item.question,
+            options: item.options,
+            correctAnswer: item.correctAnswer,
+            explanation: item.explanation || "",
+          });
+        }
+        return { questions, errors };
+      }
+    } catch {
+      // Not valid JSON, try simple text format
+    }
+
+    // Simple text format
+    const questions: Array<{ question: string; options: string[]; correctAnswer: number; explanation: string }> = [];
+    const blocks = text.split(/\n\s*\n|\r?\n\s*Q:/).filter((b) => b.trim().length > 0);
+
+    // If split didn't produce blocks well, try to rejoin — sometimes the split is tricky
+    let rawBlocks: string[] = [];
+    const lines = text.split(/\r?\n/);
+    let currentBlock = "";
+    for (const line of lines) {
+      if (/^\s*Q:/.test(line)) {
+        if (currentBlock.trim()) rawBlocks.push(currentBlock.trim());
+        currentBlock = line;
+      } else {
+        currentBlock += "\n" + line;
+      }
+    }
+    if (currentBlock.trim()) rawBlocks.push(currentBlock.trim());
+
+    if (rawBlocks.length === 0) {
+      errors.push("No questions found. Make sure each question starts with 'Q:'");
+      return { questions, errors };
+    }
+
+    for (let i = 0; i < rawBlocks.length; i++) {
+      const block = rawBlocks[i];
+      const qMatch = block.match(/^\s*Q:\s*(.+)$/m);
+      if (!qMatch) {
+        errors.push(`Block ${i + 1}: missing 'Q:' line`);
+        continue;
+      }
+      const questionText = qMatch[1].trim();
+
+      const options: string[] = [];
+      const optRegex = /^\s*([A-D])\.\s*(.+)$/gm;
+      let m: RegExpExecArray | null;
+      while ((m = optRegex.exec(block)) !== null) {
+        const idx = m[1].charCodeAt(0) - 65; // A=0, B=1, C=2, D=3
+        options[idx] = m[2].trim();
+      }
+
+      // Fill missing options with empty strings
+      for (let j = 0; j < 4; j++) {
+        if (!options[j]) options[j] = "";
+      }
+
+      const correctMatch = block.match(/^\s*Correct:\s*([A-D])\s*$/mi);
+      let correctAnswer = 0;
+      if (correctMatch) {
+        correctAnswer = correctMatch[1].charCodeAt(0) - 65;
+      } else {
+        errors.push(`Question ${i + 1}: missing 'Correct:' line`);
+      }
+
+      const explMatch = block.match(/^\s*Explanation:\s*(.+)$/mi);
+      const explanation = explMatch ? explMatch[1].trim() : "";
+
+      questions.push({ question: questionText, options, correctAnswer, explanation });
+    }
+
+    return { questions, errors };
+  }
+
+  const handleParseBulk = () => {
+    const { questions, errors } = parseBulkQuestions(bulkImportText);
+    setBulkParsedQuestions(questions);
+    setBulkImportErrors(errors);
+  };
+
+  const handleBulkImport = async () => {
+    if (!adminToken || !selectedTraining || bulkParsedQuestions.length === 0) return;
+
+    // Validate before sending
+    const validQuestions = bulkParsedQuestions.filter((q) => {
+      return q.question && q.options.length === 4 && q.options.every((o: string) => o.trim() !== "");
+    });
+
+    if (validQuestions.length === 0) {
+      alert("No valid questions to import. Each question needs text and 4 non-empty options.");
+      return;
+    }
+
+    try {
+      setSaving(true);
+      const res = await fetch(`/api/admin/trainings/${selectedTraining.id}/questions/bulk`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${adminToken}`,
+        },
+        body: JSON.stringify({ questions: validQuestions }),
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        setQuestions((prev) => [...prev, ...data.questions]);
+        setBulkImportText("");
+        setBulkParsedQuestions([]);
+        setBulkImportErrors([]);
+        setBulkImportView("single");
+        alert(`Successfully imported ${data.count} questions!`);
+      } else {
+        alert(data.error || "Failed to import questions");
+      }
+    } catch (error: any) {
+      alert(error.message || "Error");
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -813,127 +957,272 @@ export default function AdminPage() {
 
             {/* QUESTIONS TAB */}
             {activeTab === "questions" && (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {/* Add Question Form */}
-                <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Add Exam Question</h3>
-                  <form onSubmit={handleAddQuestion} className="space-y-4">
-                    <textarea
-                      placeholder="Question text"
-                      rows={2}
-                      required
-                      value={newQuestion.question}
-                      onChange={(e) => setNewQuestion({ ...newQuestion, question: e.target.value })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none resize-none"
-                    />
-                    <div className="grid grid-cols-1 gap-3">
-                      {[0, 1, 2, 3].map((i) => (
-                        <div key={i} className="flex items-center space-x-2">
-                          <input
-                            type="radio"
-                            name="correct"
-                            checked={newQuestion.correctAnswer === i}
-                            onChange={() => setNewQuestion({ ...newQuestion, correctAnswer: i })}
-                            className="w-4 h-4 text-blue-600"
-                          />
-                          <input
-                            type="text"
-                            placeholder={`Option ${String.fromCharCode(65 + i)}`}
-                            required
-                            value={(newQuestion as any)[`option${i}`]}
-                            onChange={(e) =>
-                              setNewQuestion({ ...(newQuestion as any), [`option${i}`]: e.target.value })
-                            }
-                            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-sm"
-                          />
-                        </div>
-                      ))}
-                    </div>
-                    <textarea
-                      placeholder="Explanation (shown after answering)"
-                      rows={2}
-                      value={newQuestion.explanation}
-                      onChange={(e) => setNewQuestion({ ...newQuestion, explanation: e.target.value })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none resize-none text-sm"
-                    />
-                    <p className="text-xs text-gray-500">
-                      Select the radio button next to the correct answer.
-                    </p>
-                    <button
-                      type="submit"
-                      disabled={saving}
-                      className="flex items-center space-x-2 bg-green-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-green-700 transition-colors disabled:opacity-50"
-                    >
-                      {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
-                      <span>Add Question</span>
-                    </button>
-                  </form>
+              <div className="space-y-6">
+                {/* Sub-tabs */}
+                <div className="flex space-x-1 bg-gray-200 p-1 rounded-lg w-fit">
+                  <button
+                    onClick={() => setBulkImportView("single")}
+                    className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                      bulkImportView === "single"
+                        ? "bg-white text-blue-700 shadow-sm"
+                        : "text-gray-600 hover:text-gray-900"
+                    }`}
+                  >
+                    Single Question
+                  </button>
+                  <button
+                    onClick={() => setBulkImportView("bulk")}
+                    className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                      bulkImportView === "bulk"
+                        ? "bg-white text-blue-700 shadow-sm"
+                        : "text-gray-600 hover:text-gray-900"
+                    }`}
+                  >
+                    Bulk Import
+                  </button>
                 </div>
 
-                {/* Question List */}
-                <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                    Existing Questions ({questions.length})
-                  </h3>
-                  {questions.length === 0 ? (
-                    <div className="text-center py-8 text-gray-400">
-                      <FileQuestion className="w-10 h-10 mx-auto mb-3 opacity-50" />
-                      <p>No questions yet. Add at least 15 for the exam.</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-4 max-h-[600px] overflow-y-auto pr-1">
-                      {questions.map((q, idx) => (
-                        <div
-                          key={q.id}
-                          className="p-4 bg-gray-50 rounded-lg border border-gray-100"
+                {bulkImportView === "single" && (
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {/* Add Question Form */}
+                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                      <h3 className="text-lg font-semibold text-gray-900 mb-4">Add Exam Question</h3>
+                      <form onSubmit={handleAddQuestion} className="space-y-4">
+                        <textarea
+                          placeholder="Question text"
+                          rows={2}
+                          required
+                          value={newQuestion.question}
+                          onChange={(e) => setNewQuestion({ ...newQuestion, question: e.target.value })}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none resize-none"
+                        />
+                        <div className="grid grid-cols-1 gap-3">
+                          {[0, 1, 2, 3].map((i) => (
+                            <div key={i} className="flex items-center space-x-2">
+                              <input
+                                type="radio"
+                                name="correct"
+                                checked={newQuestion.correctAnswer === i}
+                                onChange={() => setNewQuestion({ ...newQuestion, correctAnswer: i })}
+                                className="w-4 h-4 text-blue-600"
+                              />
+                              <input
+                                type="text"
+                                placeholder={`Option ${String.fromCharCode(65 + i)}`}
+                                required
+                                value={(newQuestion as any)[`option${i}`]}
+                                onChange={(e) =>
+                                  setNewQuestion({ ...(newQuestion as any), [`option${i}`]: e.target.value })
+                                }
+                                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-sm"
+                              />
+                            </div>
+                          ))}
+                        </div>
+                        <textarea
+                          placeholder="Explanation (shown after answering)"
+                          rows={2}
+                          value={newQuestion.explanation}
+                          onChange={(e) => setNewQuestion({ ...newQuestion, explanation: e.target.value })}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none resize-none text-sm"
+                        />
+                        <p className="text-xs text-gray-500">
+                          Select the radio button next to the correct answer.
+                        </p>
+                        <button
+                          type="submit"
+                          disabled={saving}
+                          className="flex items-center space-x-2 bg-green-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-green-700 transition-colors disabled:opacity-50"
                         >
-                          <div className="flex items-start justify-between mb-2">
-                            <div className="flex items-center space-x-2">
-                              <span className="text-xs font-medium text-blue-600 bg-blue-50 px-2 py-0.5 rounded">
-                                Q{idx + 1}
-                              </span>
+                          {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
+                          <span>Add Question</span>
+                        </button>
+                      </form>
+                    </div>
+
+                    {/* Question List */}
+                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                      <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                        Existing Questions ({questions.length})
+                      </h3>
+                      {questions.length === 0 ? (
+                        <div className="text-center py-8 text-gray-400">
+                          <FileQuestion className="w-10 h-10 mx-auto mb-3 opacity-50" />
+                          <p>No questions yet. Add at least 15 for the exam.</p>
+                        </div>
+                      ) : (
+                        <div className="space-y-4 max-h-[600px] overflow-y-auto pr-1">
+                          {questions.map((q, idx) => (
+                            <div
+                              key={q.id}
+                              className="p-4 bg-gray-50 rounded-lg border border-gray-100"
+                            >
+                              <div className="flex items-start justify-between mb-2">
+                                <div className="flex items-center space-x-2">
+                                  <span className="text-xs font-medium text-blue-600 bg-blue-50 px-2 py-0.5 rounded">
+                                    Q{idx + 1}
+                                  </span>
+                                  {q.explanation && (
+                                    <span className="text-xs text-gray-400">has explanation</span>
+                                  )}
+                                </div>
+                                <button
+                                  onClick={() => handleDeleteQuestion(q.id)}
+                                  className="p-1 text-red-500 hover:bg-red-50 rounded transition-colors"
+                                  title="Delete question"
+                                >
+                                  <Trash2 className="w-3.5 h-3.5" />
+                                </button>
+                              </div>
+                              <p className="text-sm text-gray-900 mb-2">{q.question}</p>
+                              <div className="space-y-1">
+                                {q.options.map((opt, oi) => (
+                                  <div
+                                    key={oi}
+                                    className={`flex items-center space-x-2 text-sm px-2 py-1 rounded ${
+                                      oi === q.correctAnswer
+                                        ? "bg-green-100 text-green-800"
+                                        : "text-gray-600"
+                                    }`}
+                                  >
+                                    {oi === q.correctAnswer ? (
+                                      <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" />
+                                    ) : (
+                                      <span className="w-3.5 h-3.5 flex-shrink-0 inline-block" />
+                                    )}
+                                    <span>
+                                      {String.fromCharCode(65 + oi)}. {opt}
+                                    </span>
+                                  </div>
+                                ))}
+                              </div>
                               {q.explanation && (
-                                <span className="text-xs text-gray-400">has explanation</span>
+                                <p className="text-xs text-gray-500 mt-2 italic">{q.explanation}</p>
                               )}
                             </div>
-                            <button
-                              onClick={() => handleDeleteQuestion(q.id)}
-                              className="p-1 text-red-500 hover:bg-red-50 rounded transition-colors"
-                              title="Delete question"
-                            >
-                              <Trash2 className="w-3.5 h-3.5" />
-                            </button>
-                          </div>
-                          <p className="text-sm text-gray-900 mb-2">{q.question}</p>
-                          <div className="space-y-1">
-                            {q.options.map((opt, oi) => (
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {bulkImportView === "bulk" && (
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {/* Bulk Import Form */}
+                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 space-y-4">
+                      <div>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-1">Bulk Import Questions</h3>
+                        <p className="text-sm text-gray-500">
+                          Paste questions in the simple text format or as JSON. Each question needs 4 options and a correct answer.
+                        </p>
+                      </div>
+                      <textarea
+                        placeholder={`Q: What is defensive driving?\nA. Driving fast to avoid danger\nB. Driving to save lives, time, and money\nC. Driving aggressively\nD. Driving without a license\nCorrect: B\nExplanation: Defensive driving is about anticipating hazards.\n\nQ: What does a red traffic light mean?\nA. Go\nB. Stop\nC. Slow down\nD. Yield\nCorrect: B`}
+                        rows={12}
+                        value={bulkImportText}
+                        onChange={(e) => setBulkImportText(e.target.value)}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none resize-none font-mono text-sm"
+                      />
+                      <button
+                        onClick={handleParseBulk}
+                        disabled={saving || !bulkImportText.trim()}
+                        className="flex items-center space-x-2 bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-50"
+                      >
+                        {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <FileText className="w-4 h-4" />}
+                        <span>Parse & Preview</span>
+                      </button>
+
+                      {bulkImportErrors.length > 0 && (
+                        <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                          <p className="text-sm font-medium text-red-700 mb-1">Parse warnings:</p>
+                          <ul className="text-xs text-red-600 space-y-1 list-disc list-inside">
+                            {bulkImportErrors.map((err, i) => (
+                              <li key={i}>{err}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
+                      {bulkParsedQuestions.length > 0 && (
+                        <div className="flex items-center justify-between pt-2 border-t border-gray-100">
+                          <span className="text-sm text-gray-600">
+                            <span className="font-semibold text-gray-900">{bulkParsedQuestions.length}</span> questions ready to import
+                          </span>
+                          <button
+                            onClick={handleBulkImport}
+                            disabled={saving}
+                            className="flex items-center space-x-2 bg-green-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-green-700 transition-colors disabled:opacity-50"
+                          >
+                            {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+                            <span>Import All</span>
+                          </button>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Preview */}
+                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                      <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                        Preview ({bulkParsedQuestions.length})
+                      </h3>
+                      {bulkParsedQuestions.length === 0 ? (
+                        <div className="text-center py-8 text-gray-400">
+                          <FileQuestion className="w-10 h-10 mx-auto mb-3 opacity-50" />
+                          <p>No questions parsed yet. Click &quot;Parse & Preview&quot; to see results.</p>
+                        </div>
+                      ) : (
+                        <div className="space-y-4 max-h-[600px] overflow-y-auto pr-1">
+                          {bulkParsedQuestions.map((q, idx) => {
+                            const hasError = !q.question || q.options.some((o: string) => !o.trim());
+                            return (
                               <div
-                                key={oi}
-                                className={`flex items-center space-x-2 text-sm px-2 py-1 rounded ${
-                                  oi === q.correctAnswer
-                                    ? "bg-green-100 text-green-800"
-                                    : "text-gray-600"
+                                key={idx}
+                                className={`p-4 rounded-lg border ${
+                                  hasError ? "bg-red-50 border-red-200" : "bg-gray-50 border-gray-100"
                                 }`}
                               >
-                                {oi === q.correctAnswer ? (
-                                  <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" />
-                                ) : (
-                                  <span className="w-3.5 h-3.5 flex-shrink-0 inline-block" />
+                                <div className="flex items-start justify-between mb-2">
+                                  <span className="text-xs font-medium text-blue-600 bg-blue-50 px-2 py-0.5 rounded">
+                                    Q{idx + 1}
+                                  </span>
+                                  {hasError && (
+                                    <span className="text-xs text-red-600 font-medium">Invalid — missing fields</span>
+                                  )}
+                                </div>
+                                <p className="text-sm text-gray-900 mb-2">{q.question || <span className="italic text-red-400">Missing question text</span>}</p>
+                                <div className="space-y-1">
+                                  {q.options.map((opt: string, oi: number) => (
+                                    <div
+                                      key={oi}
+                                      className={`flex items-center space-x-2 text-sm px-2 py-1 rounded ${
+                                        oi === q.correctAnswer
+                                          ? "bg-green-100 text-green-800"
+                                          : "text-gray-600"
+                                      }`}
+                                    >
+                                      {oi === q.correctAnswer ? (
+                                        <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" />
+                                      ) : (
+                                        <span className="w-3.5 h-3.5 flex-shrink-0 inline-block" />
+                                      )}
+                                      <span>
+                                        {String.fromCharCode(65 + oi)}. {opt || <span className="text-red-400 italic">empty</span>}
+                                      </span>
+                                    </div>
+                                  ))}
+                                </div>
+                                {q.explanation && (
+                                  <p className="text-xs text-gray-500 mt-2 italic">{q.explanation}</p>
                                 )}
-                                <span>
-                                  {String.fromCharCode(65 + oi)}. {opt}
-                                </span>
                               </div>
-                            ))}
-                          </div>
-                          {q.explanation && (
-                            <p className="text-xs text-gray-500 mt-2 italic">{q.explanation}</p>
-                          )}
+                            );
+                          })}
                         </div>
-                      ))}
+                      )}
                     </div>
-                  )}
-                </div>
+                  </div>
+                )}
               </div>
             )}
           </div>
