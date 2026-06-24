@@ -13,8 +13,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Bright Academy | Professional Driver Training",
+  title: "Bright Academy | Securing Future",
   description: "Premium driver training and certification platform by Bright Elite Tours & Travels",
+  icons: {
+    icon: "/bright-academy-logo.png",
+  },
 };
 
 export default function RootLayout({

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { GraduationCap, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -44,8 +44,12 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-900 to-blue-700">
       <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md mx-4">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
-            <GraduationCap className="w-8 h-8 text-blue-700" />
+          <div className="flex justify-center mb-4">
+            <img
+              src="/bright-academy-logo.png"
+              alt="Bright Academy"
+              className="h-20 w-auto object-contain"
+            />
           </div>
           <h1 className="text-2xl font-bold text-gray-900">Bright Academy</h1>
           <p className="text-gray-500 mt-1">Professional Training Platform</p>

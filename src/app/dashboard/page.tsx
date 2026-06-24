@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
-  GraduationCap,
   BookOpen,
   Award,
   Lock,
@@ -93,7 +92,11 @@ export default function DashboardPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-3">
-              <GraduationCap className="w-8 h-8 text-blue-700" />
+              <img
+                src="/bright-academy-logo.png"
+                alt="Bright Academy"
+                className="h-8 w-auto object-contain"
+              />
               <span className="text-xl font-bold text-gray-900">Bright Academy</span>
             </div>
             <div className="flex items-center space-x-4">
