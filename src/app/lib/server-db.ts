@@ -81,6 +81,8 @@ export async function initDb() {
         price INTEGER NOT NULL DEFAULT 0,
         duration VARCHAR(100),
         level VARCHAR(50),
+        time_limit INTEGER DEFAULT 0,
+        is_free BOOLEAN DEFAULT FALSE,
         content JSONB DEFAULT '[]',
         status VARCHAR(50) DEFAULT 'active',
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -113,6 +115,7 @@ export async function initDb() {
         progress INTEGER DEFAULT 0,
         exam_attempts INTEGER DEFAULT 0,
         max_attempts INTEGER DEFAULT 3,
+        exam_started_at TIMESTAMP,
         passed BOOLEAN DEFAULT FALSE,
         score INTEGER DEFAULT 0,
         certificate_url VARCHAR(500),
@@ -179,6 +182,8 @@ export function dbRowToTraining(row: any) {
     price: row.price,
     duration: row.duration,
     level: row.level,
+    timeLimit: row.time_limit || 0,
+    isFree: row.is_free || false,
     content: row.content || [],
     status: row.status,
     createdAt: row.created_at,
@@ -272,6 +277,7 @@ export function dbRowToEnrollment(row: any) {
     score: row.score,
     certificateUrl: row.certificate_url,
     completedAt: row.completed_at,
+    examStartedAt: row.exam_started_at,
     createdAt: row.created_at,
   };
 }

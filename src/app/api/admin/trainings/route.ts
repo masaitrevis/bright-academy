@@ -8,7 +8,7 @@ export async function POST(req: NextRequest) {
   if (unauthorized) return unauthorized;
   try {
     const body = await req.json();
-    const { title, code, description, price, duration, level, content } = body;
+    const { title, code, description, price, duration, level, content, timeLimit, isFree } = body;
 
     if (!title || !code) {
       return NextResponse.json({ error: "Title and code required" }, { status: 400 });
@@ -19,9 +19,9 @@ export async function POST(req: NextRequest) {
     }
 
     const result = await pool.query(
-      `INSERT INTO trainings (title, code, description, price, duration, level, content)
-       VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
-      [title, code, description || "", price || 0, duration || "", level || "", JSON.stringify(content || [])]
+      `INSERT INTO trainings (title, code, description, price, duration, level, time_limit, is_free, content)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`,
+      [title, code, description || "", price || 0, duration || "", level || "", timeLimit || 0, isFree || false, JSON.stringify(content || [])]
     );
 
     return NextResponse.json({ success: true, training: dbRowToTraining(result.rows[0]) });
@@ -54,7 +54,7 @@ export async function PUT(req: NextRequest) {
   if (unauthorized) return unauthorized;
   try {
     const body = await req.json();
-    const { id, title, code, description, price, duration, level, status } = body;
+    const { id, title, code, description, price, duration, level, status, timeLimit, isFree } = body;
 
     if (!id) {
       return NextResponse.json({ error: "Training ID required" }, { status: 400 });
@@ -75,6 +75,8 @@ export async function PUT(req: NextRequest) {
     if (duration !== undefined) { fields.push(`duration = $${idx++}`); values.push(duration); }
     if (level !== undefined) { fields.push(`level = $${idx++}`); values.push(level); }
     if (status !== undefined) { fields.push(`status = $${idx++}`); values.push(status); }
+    if (timeLimit !== undefined) { fields.push(`time_limit = $${idx++}`); values.push(timeLimit); }
+    if (isFree !== undefined) { fields.push(`is_free = $${idx++}`); values.push(isFree); }
 
     if (fields.length === 0) {
       return NextResponse.json({ error: "No fields to update" }, { status: 400 });

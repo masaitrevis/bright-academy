@@ -176,18 +176,18 @@ export default function CertificatePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-blue-700" />
+      <div className="min-h-screen bg-[#0f172a] flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-[#d4af37]" />
       </div>
     );
   }
 
   if (!certificate) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen bg-[#0f172a] flex items-center justify-center">
         <div className="text-center">
-          <p className="text-gray-500 mb-4">Certificate not found or exam not passed.</p>
-          <Link href="/dashboard" className="text-blue-600 hover:underline">
+          <p className="text-[#94a3b8] mb-4">Certificate not found or exam not passed.</p>
+          <Link href="/dashboard" className="text-[#d4af37] hover:underline">
             Back to Dashboard
           </Link>
         </div>
@@ -196,17 +196,17 @@ export default function CertificatePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b border-gray-200">
+    <div className="min-h-screen bg-[#0f172a] text-[#e2e8f0]">
+      <header className="bg-[#1e293b] border-b border-[#334155]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <Link href="/dashboard" className="flex items-center text-gray-600 hover:text-gray-900">
+            <Link href="/dashboard" className="flex items-center text-[#94a3b8] hover:text-white transition-colors">
               <ArrowLeft className="w-5 h-5 mr-2" />
               Back to Dashboard
             </Link>
             <button
               onClick={downloadPDF}
-              className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors"
+              className="flex items-center space-x-2 bg-[#d4af37] text-[#0f172a] px-4 py-2 rounded-lg font-semibold hover:bg-[#b8960b] transition-colors"
             >
               <Download className="w-4 h-4" />
               <span>Download PDF</span>
@@ -217,8 +217,8 @@ export default function CertificatePage() {
 
       <main className="max-w-5xl mx-auto px-4 py-8">
         {/* On-screen certificate display */}
-        <div className="bg-white border-8 border-double border-blue-900 p-12 text-center" style={{ aspectRatio: "1.414/1" }}>
-          <div className="border-4 border-amber-500 p-8 h-full flex flex-col justify-between">
+        <div className="bg-[#1e293b] border-8 border-double border-[#d4af37] p-12 text-center" style={{ aspectRatio: "1.414/1" }}>
+          <div className="border-4 border-[#d4af37] p-8 h-full flex flex-col justify-between">
             <div>
               <div className="flex justify-center mb-4">
                 <img
@@ -228,18 +228,18 @@ export default function CertificatePage() {
                   onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
                 />
               </div>
-              <h1 className="text-4xl font-bold text-blue-900 mb-2">CERTIFICATE OF COMPLETION</h1>
-              <p className="text-lg text-gray-600">This certifies that</p>
+              <h1 className="text-4xl font-bold text-[#d4af37] mb-2">CERTIFICATE OF COMPLETION</h1>
+              <p className="text-lg text-[#94a3b8]">This certifies that</p>
             </div>
 
             <div className="my-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">{certificate.userName}</h2>
-              <p className="text-lg text-gray-600">has successfully completed</p>
-              <h3 className="text-2xl font-bold text-blue-800 mt-4">{certificate.trainingTitle}</h3>
-              <p className="text-sm text-gray-500 mt-2">Course Code: {certificate.trainingCode}</p>
+              <h2 className="text-3xl font-bold text-white mb-4">{certificate.userName}</h2>
+              <p className="text-lg text-[#94a3b8]">has successfully completed</p>
+              <h3 className="text-2xl font-bold text-[#d4af37] mt-4">{certificate.trainingTitle}</h3>
+              <p className="text-sm text-[#94a3b8] mt-2">Course Code: {certificate.trainingCode}</p>
             </div>
 
-            <div className="flex items-center justify-center space-x-8 text-sm text-gray-500">
+            <div className="flex items-center justify-center space-x-8 text-sm text-[#94a3b8]">
               <div className="flex items-center space-x-2">
                 <Calendar className="w-4 h-4" />
                 <span>
@@ -252,8 +252,8 @@ export default function CertificatePage() {
               </div>
             </div>
 
-            <div className="mt-8 pt-8 border-t border-gray-200">
-              <p className="text-sm text-gray-500">
+            <div className="mt-8 pt-8 border-t border-[#334155]">
+              <p className="text-sm text-[#94a3b8]">
                 Bright Academy | A subsidiary of Bright Elite Tours & Travels
               </p>
             </div>

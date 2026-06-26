@@ -5,8 +5,11 @@ import { requireAdmin } from "@/app/lib/admin-auth";
 interface ContentModule {
   id: string;
   title: string;
-  type: "text" | "video" | "document";
+  type: "text" | "video" | "document" | "file";
   content: string;
+  fileUrl?: string;
+  fileType?: string;
+  fileName?: string;
 }
 
 // GET content modules for a training
@@ -61,8 +64,8 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
       if (!mod.title || !mod.type || !mod.content) {
         return NextResponse.json({ error: "Each module must have title, type, and content" }, { status: 400 });
       }
-      if (!["text", "video", "document"].includes(mod.type)) {
-        return NextResponse.json({ error: "Module type must be text, video, or document" }, { status: 400 });
+      if (!["text", "video", "document", "file"].includes(mod.type)) {
+        return NextResponse.json({ error: "Module type must be text, video, document, or file" }, { status: 400 });
       }
     }
 

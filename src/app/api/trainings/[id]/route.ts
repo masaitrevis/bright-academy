@@ -22,6 +22,9 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     }
 
     const training = dbRowToTraining(trainingResult.rows[0]);
+    // Include timeLimit and isFree explicitly
+    training.timeLimit = trainingResult.rows[0].time_limit || 0;
+    training.isFree = trainingResult.rows[0].is_free || false;
 
     // Do NOT include questions in the public response — they leak correct answers.
     // Questions are served separately by the /api/trainings/[id]/exam endpoint.

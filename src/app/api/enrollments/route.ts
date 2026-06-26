@@ -46,6 +46,14 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Database not connected" }, { status: 500 });
     }
 
+    // Check if training is free
+    const trainingResult = await pool.query(
+      "SELECT is_free, price FROM trainings WHERE id = $1",
+      [trainingId]
+    );
+    const isFree = trainingResult.rows[0]?.is_free || false;
+    const trainingPrice = trainingResult.rows[0]?.price || 0;
+
     // Check if already enrolled
     const existing = await pool.query(
       "SELECT * FROM enrollments WHERE user_id = $1 AND training_id = $2",
@@ -54,22 +62,22 @@ export async function POST(req: NextRequest) {
 
     if (existing.rows.length > 0) {
       const enrollment = existing.rows[0];
-      if (!enrollment.paid && paymentReference) {
-        // Update payment
+      if (!enrollment.paid && (paymentReference || isFree)) {
+        // Update payment (or auto-confirm for free trainings)
         await pool.query(
           "UPDATE enrollments SET paid = true, payment_reference = $1 WHERE id = $2",
-          [paymentReference, enrollment.id]
+          [paymentReference || "FREE", enrollment.id]
         );
-        return NextResponse.json({ success: true, message: "Payment confirmed" });
+        return NextResponse.json({ success: true, message: isFree ? "Free training unlocked" : "Payment confirmed" });
       }
       return NextResponse.json({ error: "Already enrolled" }, { status: 409 });
     }
 
-    // Create new enrollment
+    // Create new enrollment — free trainings are auto-paid
     const result = await pool.query(
       `INSERT INTO enrollments (user_id, training_id, paid, payment_reference)
        VALUES ($1, $2, $3, $4) RETURNING *`,
-      [userId, trainingId, !!paymentReference, paymentReference || null]
+      [userId, trainingId, isFree || !!paymentReference, paymentReference || (isFree ? "FREE" : null)]
     );
 
     const enrollment = dbRowToEnrollment(result.rows[0]);
