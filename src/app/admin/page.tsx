@@ -1132,8 +1132,7 @@ export default function AdminPage() {
                             ) : mod.type === "file" ? (
                               <a
                                 href={mod.fileUrl || mod.content}
-                                target="_blank"
-                                rel="noopener noreferrer"
+                                download={mod.fileName || "download"}
                                 className="text-xs text-[#d4af37] hover:underline mt-1 flex items-center space-x-1"
                               >
                                 <Download className="w-3 h-3" />

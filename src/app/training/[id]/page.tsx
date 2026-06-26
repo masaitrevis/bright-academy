@@ -336,8 +336,7 @@ export default function TrainingPage() {
                         <div className="mt-3 flex items-center space-x-3">
                           <a
                             href={module.fileUrl || module.content}
-                            target="_blank"
-                            rel="noopener noreferrer"
+                            download={module.fileName || "download"}
                             className="inline-flex items-center space-x-2 bg-[#d4af37] text-[#0f172a] px-4 py-2 rounded-lg text-sm font-semibold hover:bg-[#b8960b] transition-colors"
                           >
                             <Download className="w-4 h-4" />
