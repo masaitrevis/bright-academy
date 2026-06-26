@@ -4,7 +4,7 @@ import crypto from "crypto";
 // Admin password from env (fallback for dev — change in production!)
 export const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "BrightAcademy2024!";
 
-const JWT_SECRET = process.env.JWT_SECRET || process.env.ADMIN_SECRET || "";
+export const JWT_SECRET = process.env.JWT_SECRET || process.env.ADMIN_SECRET || "bright-academy-admin-secret-2024";
 
 function base64UrlEncode(str: string): string {
   return Buffer.from(str)

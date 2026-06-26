@@ -3,8 +3,10 @@ import { writeFile, mkdir } from "fs/promises";
 import { existsSync } from "fs";
 import path from "path";
 import { jwtVerify } from "jose";
+import { JWT_SECRET as ADMIN_JWT_SECRET } from "@/app/lib/admin-auth";
 
-const JWT_SECRET = new TextEncoder().encode(process.env.ADMIN_SECRET || "bright-academy-admin-secret-2024");
+// Use the same secret as admin-auth.ts (already TextEncoder-encoded there)
+const JWT_SECRET = new TextEncoder().encode(ADMIN_JWT_SECRET || "bright-academy-admin-secret-2024");
 
 export async function POST(req: NextRequest) {
   try {
