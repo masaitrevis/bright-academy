@@ -8,6 +8,8 @@ const JWT_SECRET = new TextEncoder().encode(
 
 export async function GET(req: NextRequest) {
   try {
+    const { searchParams } = new URL(req.url);
+
     // Verify user token (from header or query param for browser navigation)
     const authHeader = req.headers.get("authorization");
     const queryToken = searchParams.get("token");
@@ -24,7 +26,6 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    const { searchParams } = new URL(req.url);
     const trainingId = searchParams.get("trainingId");
     const moduleId = searchParams.get("moduleId");
 
