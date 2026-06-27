@@ -295,7 +295,7 @@ export default function TrainingPage() {
                         {module.type === "video" && <Play className="w-5 h-5 text-[#94a3b8]" />}
                         {module.type === "file" && (
                           <a
-                            href={module.fileUrl || module.content}
+                            href={`/api/view/file?trainingId=${training.id}&moduleId=${module.id}&token=${localStorage.getItem("token") || ""}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-[#d4af37] hover:text-[#b8960b] transition-colors"
@@ -323,7 +323,7 @@ export default function TrainingPage() {
                       {module.type === "document" && (
                         <div className="mt-3">
                           <a
-                            href={module.content}
+                            href={`/api/view/file?trainingId=${training.id}&moduleId=${module.id}&token=${localStorage.getItem("token") || ""}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-sm text-[#d4af37] hover:underline"
@@ -335,7 +335,7 @@ export default function TrainingPage() {
                       {module.type === "file" && (
                         <div className="mt-3 flex items-center space-x-3">
                           <a
-                            href={module.fileUrl || module.content}
+                            href={`/api/view/file?trainingId=${training.id}&moduleId=${module.id}&token=${localStorage.getItem("token") || ""}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="inline-flex items-center space-x-2 bg-[#d4af37] text-[#0f172a] px-4 py-2 rounded-lg text-sm font-semibold hover:bg-[#b8960b] transition-colors"

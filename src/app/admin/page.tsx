@@ -1130,7 +1130,7 @@ export default function AdminPage() {
                               <p className="text-xs text-[#94a3b8] mt-1 line-clamp-2">{mod.content}</p>
                             ) : mod.type === "file" ? (
                               <a
-                                href={mod.fileUrl || mod.content}
+                                href={`/api/view/file?trainingId=${selectedTraining?.id}&moduleId=${mod.id}&token=${localStorage.getItem("admin_token") || ""}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-xs text-[#d4af37] hover:underline mt-1 flex items-center space-x-1"
