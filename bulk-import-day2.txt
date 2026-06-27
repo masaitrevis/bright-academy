@@ -1,0 +1,159 @@
+Q: What is the total stopping distance at 100 km/h on dry roads?
+A. 85m
+B. 100m
+C. 120m
+D. 150m
+Correct: C
+Explanation: At 100 km/h on dry roads, the total stopping distance (reaction + braking) is approximately 120 metres.
+
+Q: What happens to weight distribution when braking?
+A. Shifts rearward
+B. Shifts forward
+C. Remains balanced
+D. Shifts to the left
+Correct: B
+Explanation: During braking, weight transfers forward onto the front wheels, increasing front tyre grip and reducing rear grip.
+
+Q: What is the most common loss of control in FWD vehicles?
+A. Oversteer
+B. Understeer
+C. Snap oversteer
+D. Power-on oversteer
+Correct: B
+Explanation: Front-wheel-drive vehicles typically exhibit understeer (plowing wide) as the most common loss of control.
+
+Q: What is the correct recovery for understeer?
+A. Apply more steering input
+B. Reduce steering slightly, ease off throttle
+C. Brake hard and counter-steer
+D. Accelerate to pull the front end in
+Correct: B
+Explanation: To recover from understeer, reduce steering input slightly and ease off the throttle to allow front tyres to regain grip.
+
+Q: What is the correct recovery for oversteer?
+A. Brake hard immediately
+B. Counter-steer in direction of slide
+C. Steer away from the slide
+D. Apply full throttle
+Correct: B
+Explanation: Oversteer recovery requires counter-steering in the direction of the slide (into the skid) to balance the vehicle.
+
+Q: At what speed does aquaplaning risk increase sharply?
+A. 50 km/h
+B. 60 km/h
+C. 70 km/h
+D. 90 km/h
+Correct: C
+Explanation: Aquaplaning risk increases sharply at speeds above 70 km/h as tyres cannot displace water fast enough to maintain road contact.
+
+Q: What is the first response to aquaplaning?
+A. Brake firmly to slow down
+B. Steer aggressively to find grip
+C. Ease off accelerator, hold steering lightly
+D. Accelerate to push through the water
+Correct: C
+Explanation: When aquaplaning, ease off the accelerator and hold the steering lightly until tyres regain contact with the road surface.
+
+Q: What does the 'I' in IPSGA stand for?
+A. Information
+B. Identify
+C. Inspect
+D. Intervene
+Correct: A
+Explanation: IPSGA stands for Information, Position, Speed, Gear, Acceleration - the systematic approach to hazard management.
+
+Q: What does the 'S' in IPSGA stand for?
+A. Signal
+B. Speed
+C. Stop
+D. Scan
+Correct: B
+Explanation: In the IPSGA system, S stands for Speed - adjusting vehicle speed appropriately for the hazard.
+
+Q: What is the recommended following gap on wet roads?
+A. 3 seconds
+B. 4 seconds
+C. 6 seconds
+D. 8 seconds
+Correct: C
+Explanation: On wet roads, the following gap should be doubled to 6 seconds to account for reduced traction and longer stopping distances.
+
+Q: What is the minimum recommended tyre tread depth for professional fleets?
+A. 1.6mm
+B. 2.0mm
+C. 3.0mm
+D. 4.0mm
+Correct: C
+Explanation: Professional fleets should maintain a minimum of 3.0mm tread depth for optimal safety and performance.
+
+Q: What percentage of peripheral vision is lost at night?
+A. 30%
+B. 50%
+C. 70%
+D. 90%
+Correct: C
+Explanation: At night, approximately 70% of peripheral vision is lost due to reduced light levels, significantly narrowing the field of view.
+
+Q: What is the primary rule for motorway lane discipline?
+A. Keep left unless overtaking
+B. Use any lane freely
+C. Drive in the centre lane for safety
+D. Overtake on either side
+Correct: A
+Explanation: The primary rule is to keep left unless overtaking, returning to the left lane after completing the manoeuvre.
+
+Q: What is the correct following distance at 100 km/h in dry conditions?
+A. 50m (2 seconds)
+B. 83m (3 seconds)
+C. 100m (4 seconds)
+D. 120m (5 seconds)
+Correct: B
+Explanation: At 100 km/h, a 3-second gap equals approximately 83 metres, providing adequate reaction and braking distance.
+
+Q: What is the effect of doubling speed on stopping distance?
+A. Doubles
+B. Triples
+C. Quadruples
+D. Increases by 50%
+Correct: C
+Explanation: Stopping distance quadruples when speed doubles because kinetic energy increases with the square of velocity.
+
+Q: What is the recommended action when driving through shallow water?
+A. Maintain speed to create a bow wave
+B. Reduce speed, use low gear, drive slowly
+C. Stop and reverse to avoid damage
+D. Accelerate to clear the water quickly
+Correct: B
+Explanation: When driving through shallow water, reduce speed, select a low gear, and drive slowly to maintain control and avoid aquaplaning.
+
+Q: What is the primary cause of rear-wheel lock during hard braking?
+A. Weight shifting forward
+B. Brake fluid leak
+C. Rear brake bias
+D. Worn rear tyres
+Correct: A
+Explanation: During hard braking, weight shifts forward, reducing rear tyre grip and causing rear wheels to lock more easily.
+
+Q: What is the recommended rest stop frequency on long journeys?
+A. Every 1 hour
+B. Every 1.5 hours
+C. Every 2 hours
+D. Every 3 hours
+Correct: C
+Explanation: Professional drivers should take a break every 2 hours on long journeys to maintain alertness and reduce fatigue.
+
+Q: What is the primary danger of driving in fog with main beam headlights?
+A. Draining the battery quickly
+B. Main beam reflects off fog, reducing visibility
+C. Blinding other drivers
+D. Overheating the headlight units
+Correct: B
+Explanation: Main beam headlights reflect off fog particles, creating a glare that actually reduces visibility in foggy conditions.
+
+Q: What is the urban speed at which pedestrian survival drops below 30%?
+A. 50 km/h
+B. 60 km/h
+C. 70 km/h
+D. 80 km/h
+Correct: C
+Explanation: At 70 km/h, the survival rate for struck pedestrians drops below 30%, making this speed critical for urban areas.

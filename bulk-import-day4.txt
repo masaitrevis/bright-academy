@@ -1,0 +1,159 @@
+Q: What does the 'O' in OODA stand for?
+A. Observe
+B. Orient
+C. Operate
+D. Organise
+Correct: A
+Explanation: OODA stands for Observe, Orient, Decide, Act - a decision cycle developed for combat operations that applies to tactical driving.
+
+Q: What does the 'D' in OODA stand for?
+A. Detect
+B. Decide
+C. Defend
+D. Direct
+Correct: B
+Explanation: The D in OODA stands for Decide - making a rapid decision based on observed information and orientation.
+
+Q: What is the primary purpose of the OODA loop in tactical driving?
+A. To maintain vehicle speed
+B. To process information and act faster than the threat
+C. To communicate with convoy members
+D. To navigate unfamiliar routes
+Correct: B
+Explanation: The OODA loop's purpose is to cycle through observe-orient-decide-act faster than adversaries, gaining a tactical advantage.
+
+Q: What is a 'threat' in the Risk vs Threat framework?
+A. General possibility of harm
+B. Specific and identified danger
+C. Perceived but unreal danger
+D. Environmental condition
+Correct: B
+Explanation: A threat is a specific and identified danger with intent and capability to cause harm, as opposed to general risk.
+
+Q: What is the far zone scan distance at 80 km/h?
+A. 100-200m
+B. 200-330m
+C. 330-660m
+D. 660-1000m
+Correct: C
+Explanation: The far zone scan at 80 km/h covers 330-660 metres ahead, identifying potential hazards and changes in road conditions.
+
+Q: How often should mirrors be checked in high-risk environments?
+A. Every 5-8 seconds
+B. Every 3 seconds
+C. Every 10 seconds
+D. Once per minute
+Correct: B
+Explanation: In high-risk environments, mirrors should be checked every 3 seconds to maintain constant awareness of the surroundings.
+
+Q: What is the first indicator of a criminal vs official checkpoint?
+A. Road spikes visible
+B. Official identification and uniforms
+C. Vehicles blocking the road
+D. Weapons visible
+Correct: B
+Explanation: Official checkpoints have clear identification, uniforms, and marked vehicles; criminal roadblocks lack these formal indicators.
+
+Q: What is the recommended action if a criminal roadblock is identified at 200+ metres?
+A. Accelerate through the roadblock
+B. Stop, reverse, and reroute
+C. Approach slowly and negotiate
+D. Call for help while stopped
+Correct: B
+Explanation: If a criminal roadblock is identified at sufficient distance (200m+), the immediate response is to stop, reverse, and find an alternative route.
+
+Q: What percentage of carjackings occur when the driver is in or entering the vehicle?
+A. 45%
+B. 60%
+C. 78%
+D. 90%
+Correct: C
+Explanation: 78% of carjackings occur when the driver is in or entering the vehicle, highlighting the importance of vigilance during entry/exit.
+
+Q: What is the primary response to an ambush?
+A. Exit the vehicle immediately
+B. Drive out of the kill zone immediately
+C. Return fire
+D. Call for backup while stationary
+Correct: B
+Explanation: The primary response to an ambush is to drive out of the kill zone immediately - a stationary vehicle is a target.
+
+Q: What is the purpose of varying departure times and routes?
+A. Avoid traffic congestion
+B. Deny surveillance teams planning data
+C. Test different vehicle routes
+D. Comply with insurance requirements
+Correct: B
+Explanation: Varying times and routes denies hostile surveillance the predictable patterns they need to plan an attack.
+
+Q: What is a 'safe haven'?
+A. Any police station
+B. A secure location reachable within 5-10 minutes
+C. The nearest hospital
+D. A crowded public area
+Correct: B
+Explanation: A safe haven is a pre-identified secure location that can be reached within 5-10 minutes from any point on a route.
+
+Q: What is the minimum number of safe havens per route?
+A. 1
+B. 2
+C. 3
+D. 5
+Correct: C
+Explanation: Security protocols require a minimum of 3 safe havens identified along any regularly used route.
+
+Q: What is the correct response if a weapon is presented during a carjacking?
+A. Accelerate away quickly
+B. Surrender the vehicle immediately
+C. Sound horn to attract attention
+D. Lock doors and refuse to exit
+Correct: B
+Explanation: When a weapon is presented, surrender the vehicle immediately - no vehicle is worth a life.
+
+Q: What is the emergency number in Kenya?
+A. 911
+B. 999 or 112
+C. 101
+D. 112 only
+Correct: B
+Explanation: In Kenya, the emergency numbers are 999 (police/ambulance) and 112 (standard emergency number).
+
+Q: What is a 'Vulnerable Point' (VP) on a route?
+A. A location with heavy traffic
+B. Any location where speed, movement, or visibility is reduced
+C. A sharp bend in the road
+D. A school zone
+Correct: B
+Explanation: A Vulnerable Point is any location where the vehicle's speed, movement options, or visibility are restricted, making it susceptible to attack.
+
+Q: What is the primary counter-surveillance role of a professional driver?
+A. To evade followers aggressively
+B. To notice patterns and report unusual observations
+C. To install surveillance equipment
+D. To change routes randomly without reason
+Correct: B
+Explanation: The driver's counter-surveillance role is to notice unusual patterns, repeated vehicles, or suspicious behaviour and report them.
+
+Q: What is the recommended action when unable to move during an ambush?
+A. Stay inside the vehicle
+B. Exit on the side away from attackers, use vehicle as cover
+C. Exit toward the attackers to surprise them
+D. Lay flat on the floor
+Correct: B
+Explanation: If unable to drive out of an ambush, exit on the side away from attackers and use the vehicle engine block as protective cover.
+
+Q: What is the 'baseline concept' in environmental scanning?
+A. The normal appearance of an environment
+B. The maximum threat level expected
+C. The standard convoy formation
+D. The average traffic speed
+Correct: A
+Explanation: The baseline concept means knowing what 'normal' looks like for a given environment so that abnormalities stand out immediately.
+
+Q: What is the professional response to an aggressive officer at a checkpoint?
+A. Match their energy to assert authority
+B. Remain calm, polite, compliant - do not match their energy
+C. Refuse to cooperate until they calm down
+D. Request to speak to their supervisor immediately
+Correct: B
+Explanation: The professional response is to remain calm, polite, and compliant - de-escalation is the priority, never match aggression.

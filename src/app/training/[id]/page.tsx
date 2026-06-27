@@ -11,7 +11,7 @@ import {
   ArrowLeft,
   Play,
   CreditCard,
-  Download,
+  Eye,
 } from "lucide-react";
 
 interface Training {
@@ -300,7 +300,7 @@ export default function TrainingPage() {
                             rel="noopener noreferrer"
                             className="text-[#d4af37] hover:text-[#b8960b] transition-colors"
                           >
-                            <Download className="w-5 h-5" />
+                            <Eye className="w-5 h-5" />
                           </a>
                         )}
                       </div>
@@ -336,16 +336,17 @@ export default function TrainingPage() {
                         <div className="mt-3 flex items-center space-x-3">
                           <a
                             href={module.fileUrl || module.content}
-                            download={module.fileName || "download"}
+                            target="_blank"
+                            rel="noopener noreferrer"
                             className="inline-flex items-center space-x-2 bg-[#d4af37] text-[#0f172a] px-4 py-2 rounded-lg text-sm font-semibold hover:bg-[#b8960b] transition-colors"
                           >
-                            <Download className="w-4 h-4" />
-                            <span>Download {module.fileName || "File"}</span>
+                            <Eye className="w-4 h-4" />
+                            <span>Open {module.fileName || "Document"}</span>
                           </a>
                           <span className="text-xs text-[#94a3b8]">
                             {module.fileType === "application/pdf" ? "PDF" :
                              module.fileType?.includes("presentation") ? "PowerPoint" :
-                             module.fileType?.includes("word") ? "Word" : "File"}
+                             module.fileType?.includes("word") ? "Word" : "Document"}
                           </span>
                         </div>
                       )}

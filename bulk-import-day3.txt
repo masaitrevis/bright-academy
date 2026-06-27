@@ -1,0 +1,159 @@
+Q: What is the highest level of hazard perception?
+A. Reactive
+B. Proactive
+C. Predictive
+D. Defensive
+Correct: C
+Explanation: Predictive hazard perception is the highest level - anticipating hazards before they develop rather than just reacting to them.
+
+Q: At what distance ahead do advanced drivers identify potential hazards?
+A. 5-10 seconds
+B. 10-15 seconds
+C. 15-30 seconds
+D. 30-60 seconds
+Correct: C
+Explanation: Advanced drivers scan 15-30 seconds ahead to identify potential hazards early and plan their responses.
+
+Q: What is commentary driving primarily used for?
+A. Entertaining passengers
+B. Hazard perception training and professional standard
+C. Reporting road defects
+D. Practicing radio communication
+Correct: B
+Explanation: Commentary driving is a training technique where drivers verbalise hazards and their planned responses to develop hazard perception skills.
+
+Q: What is the Level 3 commentary response?
+A. What you see
+B. What could happen
+C. What you do
+D. What others are doing
+Correct: C
+Explanation: Level 3 commentary describes what action you are taking or will take in response to the identified hazard.
+
+Q: What is the hallmark of a professional driver?
+A. Speed
+B. Smoothness
+C. Aggressive overtaking
+D. Engine braking
+Correct: B
+Explanation: Smoothness in control inputs - steering, braking, and acceleration - is the hallmark of a professional driver.
+
+Q: What percentage of fuel can be saved through technique changes alone?
+A. 10%
+B. 20%
+C. 30%
+D. 40%
+Correct: C
+Explanation: Professional eco-driving techniques can reduce fuel consumption by up to 30% without changing routes or vehicles.
+
+Q: What is the correct technique for ABS emergency braking?
+A. Pump the brake pedal
+B. Apply firm, continuous pressure
+C. Brake and steer alternately
+D. Release and reapply repeatedly
+Correct: B
+Explanation: With ABS, apply firm, continuous pressure to the brake pedal and steer as needed - the system will prevent wheel lock.
+
+Q: What is threshold braking?
+A. Braking at maximum force before lock-up
+B. Braking until wheels lock then releasing
+C. Gently applying brakes progressively
+D. Using the handbrake for emergencies
+Correct: A
+Explanation: Threshold braking is applying maximum braking force just before wheel lock-up, providing optimal stopping distance on non-ABS vehicles.
+
+Q: What is the first step in evasive steering?
+A. Check mirrors
+B. Look immediately where you want to go
+C. Sound the horn
+D. Brake firmly
+Correct: B
+Explanation: The first step in evasive steering is to look where you want to go - the vehicle will follow your gaze direction.
+
+Q: What is the standard convoy gap at 80 km/h?
+A. 30 metres
+B. 40 metres
+C. 50 metres
+D. 75 metres
+Correct: C
+Explanation: The standard convoy gap at 80 km/h is 50 metres, providing safe following distance while maintaining convoy cohesion.
+
+Q: What is Position 1 in lane positioning?
+A. Left of lane centre, normal driving
+B. Centre of lane
+C. Right of lane centre
+D. Hugging the kerb
+Correct: A
+Explanation: Position 1 is left of lane centre, the normal driving position that provides best visibility and safety margin.
+
+Q: What is the primary role of the Lead Vehicle in a convoy?
+A. Rear security
+B. Route management and speed setting
+C. Navigation only
+D. Communication with control
+Correct: B
+Explanation: The Lead Vehicle manages the route, sets the pace, and makes decisions that the rest of the convoy follows.
+
+Q: What is the correct radio call format for a route change?
+A. Route change now
+B. Callsign + junction + instruction
+C. New route: [destination]
+D. Follow me
+Correct: B
+Explanation: Standard convoy radio format is: Callsign + junction/location + instruction, e.g., 'Alpha 1, approaching Junction 4, turn left'.
+
+Q: How early should an executive driver arrive at a collection point?
+A. 5 minutes
+B. 7 minutes
+C. 10-15 minutes early
+D. Exactly on time
+Correct: C
+Explanation: Executive drivers should arrive 10-15 minutes early to conduct vehicle checks and be ready before the passenger arrives.
+
+Q: What is the professional standard for in-journey conversation?
+A. Engage in friendly conversation
+B. Respond only if passenger speaks first
+C. Discuss current affairs
+D. Ask about the passenger's business
+Correct: B
+Explanation: Professional executive drivers speak only when spoken to, respecting the passenger's privacy and preference for quiet.
+
+Q: What is the confidentiality standard for executive drivers?
+A. Discuss with close colleagues only
+B. Everything is confidential - no exceptions
+C. Share if legally required
+D. Discuss anonymously
+Correct: B
+Explanation: For executive drivers, everything seen or heard is strictly confidential with absolutely no exceptions.
+
+Q: What is the minimum number of vehicles in a standard VVIP convoy?
+A. 2
+B. 3
+C. 4
+D. 5
+Correct: B
+Explanation: A standard VVIP convoy consists of a minimum of 3 vehicles: lead, principal, and follow vehicles.
+
+Q: What is the primary purpose of varying routes in security operations?
+A. Explore different scenery
+B. Avoid predictability - predictability is a vulnerability
+C. Test vehicle performance
+D. Train drivers on multiple routes
+Correct: B
+Explanation: Varying routes prevents adversaries from predicting movements and planning attacks - predictability is a critical security vulnerability.
+
+Q: What is the correct response to a passenger giving a routing instruction?
+A. Explain why your route is better
+B. Ignore and follow your planned route
+C. Say 'Understood' and follow unless safety concern
+D. Ask for written confirmation
+Correct: C
+Explanation: Professional drivers acknowledge instructions with 'Understood' and follow them unless there is a clear safety concern.
+
+Q: What is the standard gap for the Follow vehicle in a VVIP convoy?
+A. 10-20m
+B. 30-40m
+C. 50-60m
+D. 100m+
+Correct: B
+Explanation: The Follow vehicle in a VVIP convoy maintains a 30-40 metre gap, close enough to respond but not too close to be caught in the same incident.

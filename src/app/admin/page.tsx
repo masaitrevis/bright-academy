@@ -20,7 +20,6 @@ import {
   GripVertical,
   Upload,
   File,
-  Download,
   Eye,
   Timer,
   Coins,
@@ -1132,11 +1131,12 @@ export default function AdminPage() {
                             ) : mod.type === "file" ? (
                               <a
                                 href={mod.fileUrl || mod.content}
-                                download={mod.fileName || "download"}
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 className="text-xs text-[#d4af37] hover:underline mt-1 flex items-center space-x-1"
                               >
-                                <Download className="w-3 h-3" />
-                                <span>{mod.fileName || "Download file"}</span>
+                                <Eye className="w-3 h-3" />
+                                <span>{mod.fileName || "View document"}</span>
                               </a>
                             ) : (
                               <a

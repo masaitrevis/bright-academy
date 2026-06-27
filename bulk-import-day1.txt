@@ -1,0 +1,159 @@
+Q: What percentage of all road accidents are caused by human error?
+A. 45%
+B. 60%
+C. 90%+
+D. 75%
+Correct: C
+Explanation: Over 90% of road accidents are attributed to human error, highlighting the critical importance of defensive driving training.
+
+Q: According to the Smith System, how far ahead should a driver look at 60 km/h?
+A. 100 metres
+B. 180 metres
+C. 250 metres
+D. 400 metres
+Correct: C
+Explanation: The Smith System recommends looking 12-15 seconds ahead, which translates to approximately 250m at 60 km/h.
+
+Q: How often should a professional driver check their mirrors?
+A. Every 2-3 seconds
+B. Every 5-8 seconds
+C. Every 10-12 seconds
+D. Once per minute
+Correct: B
+Explanation: Professional drivers should check mirrors every 5-8 seconds to maintain full situational awareness.
+
+Q: What is the minimum following gap recommended on dry roads at normal speeds?
+A. 1 second
+B. 2 seconds
+C. 3 seconds
+D. 5 seconds
+Correct: C
+Explanation: A 3-second following gap is the minimum recommended on dry roads to allow adequate reaction and braking time.
+
+Q: After how many consecutive hours awake does driver impairment equal a 0.05% BAC?
+A. 10 hours
+B. 12 hours
+C. 17 hours
+D. 24 hours
+Correct: C
+Explanation: After 17 hours awake, driver impairment is equivalent to a blood alcohol concentration of 0.05%.
+
+Q: What does the 'P' in the POWER check stand for?
+A. Pressure
+B. Protection
+C. Performance
+D. Preparation
+Correct: B
+Explanation: In the POWER pre-trip inspection, P stands for Protection (seatbelts, first aid, safety equipment).
+
+Q: What is the minimum legal tyre tread depth in most jurisdictions?
+A. 0.8mm
+B. 1.0mm
+C. 1.6mm
+D. 3.0mm
+Correct: C
+Explanation: The minimum legal tread depth in most jurisdictions is 1.6mm, though professional fleets should maintain higher standards.
+
+Q: At what speed does a pedestrian struck have approximately a 90% survival chance?
+A. 30 km/h
+B. 50 km/h
+C. 60 km/h
+D. 40 km/h
+Correct: B
+Explanation: At 50 km/h, a struck pedestrian has approximately a 90% survival chance; this drops dramatically at higher speeds.
+
+Q: What does 'SMIDSY' stand for in road safety terminology?
+A. Sorry Mate I Didn't See You
+B. Safety Means I Drive Smartly Yearly
+C. Signal Mirrors Indicate Direction Safely Yesterday
+D. Slow Moving In Dangerous Street Y-junction
+Correct: A
+Explanation: SMIDSY is an acronym for 'Sorry Mate I Didn't See You' - a common phrase after collisions involving vulnerable road users.
+
+Q: Which of the following is a STATIC hazard?
+A. A child running into the road
+B. A pothole in the road surface
+C. A cyclist changing lanes
+D. A vehicle braking suddenly ahead
+Correct: B
+Explanation: Static hazards are fixed objects or conditions like potholes, parked vehicles, or road signs that don't move.
+
+Q: What is the recommended clearance when passing parked vehicles in urban areas?
+A. 0.5 metres
+B. 1 metre
+C. 1.5 metres
+D. 2 metres
+Correct: B
+Explanation: A 1-metre clearance is recommended when passing parked vehicles to protect against suddenly opened doors or pedestrians.
+
+Q: How much does seatbelt use reduce fatality risk for rear-seat passengers in serious crashes?
+A. Up to 25%
+B. Up to 50%
+C. Up to 75%
+D. Up to 90%
+Correct: C
+Explanation: Seatbelt use reduces fatality risk for rear-seat passengers by up to 75% in serious crashes.
+
+Q: What is the primary cause of target fixation while driving?
+A. Driving too fast for conditions
+B. Staring at a hazard rather than scanning away from it
+C. Poor mirror adjustment
+D. Fatigue and drowsiness
+Correct: B
+Explanation: Target fixation occurs when a driver stares at a hazard instead of looking where they want to go, often causing them to steer toward it.
+
+Q: In the HALT check before driving, what does the 'H' stand for?
+A. Healthy
+B. Hungry
+C. Hydrated
+D. Happy
+Correct: B
+Explanation: HALT stands for Hungry, Angry, Late, Tired - conditions that impair driving performance and should be addressed before driving.
+
+Q: What is the professional standard for alcohol consumption before driving?
+A. One standard drink maximum
+B. Zero tolerance - no alcohol
+C. Below 0.02% BAC
+D. One beer or glass of wine only
+Correct: B
+Explanation: Professional drivers should maintain zero tolerance for alcohol consumption before driving.
+
+Q: Which of the following is NOT part of the 'W' (Wheels & Tyres) check in POWER?
+A. Tyre tread depth adequate
+B. Wheel nuts secure
+C. Windshield wipers effective
+D. Tyre pressure correct
+Correct: C
+Explanation: Windshield wipers are part of the 'E' (Electrics & Extras) check, not the 'W' (Wheels & Tyres) check.
+
+Q: What does an amber traffic signal mean?
+A. Speed up to clear the junction
+B. Prepare to stop unless doing so would be unsafe
+C. Proceed with caution
+D. Stop immediately regardless of position
+Correct: B
+Explanation: An amber light means prepare to stop, unless you are so close to the junction that stopping would be unsafe.
+
+Q: How many global road deaths occur per day according to WHO data?
+A. 1,200
+B. 2,500
+C. 3,700
+D. 5,000
+Correct: C
+Explanation: According to WHO data, approximately 3,700 people die on roads globally every day.
+
+Q: Which of the following is a DYNAMIC hazard?
+A. A sharp bend in the road
+B. A cyclist overtaking on the left
+C. A traffic sign warning of roadworks
+D. A pothole in the carriageway
+Correct: B
+Explanation: Dynamic hazards are moving or changing hazards like other vehicles, pedestrians, or cyclists.
+
+Q: What is the recommended minimum space cushion to the front of your vehicle?
+A. 1 second
+B. 2 seconds
+C. 3 seconds
+D. 4 seconds
+Correct: C
+Explanation: A 3-second following distance provides the minimum safe space cushion to the front of your vehicle.

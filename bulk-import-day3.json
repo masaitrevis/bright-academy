@@ -1,0 +1,124 @@
+{
+  "questions": [
+    {
+      "question": "What is the highest level of hazard perception?",
+      "options": ["Reactive", "Proactive", "Predictive", "Defensive"],
+      "correctAnswer": 2,
+      "explanation": "Predictive hazard perception is the highest level - anticipating hazards before they develop rather than just reacting to them."
+    },
+    {
+      "question": "At what distance ahead do advanced drivers identify potential hazards?",
+      "options": ["5-10 seconds", "10-15 seconds", "15-30 seconds", "30-60 seconds"],
+      "correctAnswer": 2,
+      "explanation": "Advanced drivers scan 15-30 seconds ahead to identify potential hazards early and plan their responses."
+    },
+    {
+      "question": "What is commentary driving primarily used for?",
+      "options": ["Entertaining passengers", "Hazard perception training and professional standard", "Reporting road defects", "Practicing radio communication"],
+      "correctAnswer": 1,
+      "explanation": "Commentary driving is a training technique where drivers verbalise hazards and their planned responses to develop hazard perception skills."
+    },
+    {
+      "question": "What is the Level 3 commentary response?",
+      "options": ["What you see", "What could happen", "What you do", "What others are doing"],
+      "correctAnswer": 2,
+      "explanation": "Level 3 commentary describes what action you are taking or will take in response to the identified hazard."
+    },
+    {
+      "question": "What is the hallmark of a professional driver?",
+      "options": ["Speed", "Smoothness", "Aggressive overtaking", "Engine braking"],
+      "correctAnswer": 1,
+      "explanation": "Smoothness in control inputs - steering, braking, and acceleration - is the hallmark of a professional driver."
+    },
+    {
+      "question": "What percentage of fuel can be saved through technique changes alone?",
+      "options": ["10%", "20%", "30%", "40%"],
+      "correctAnswer": 2,
+      "explanation": "Professional eco-driving techniques can reduce fuel consumption by up to 30% without changing routes or vehicles."
+    },
+    {
+      "question": "What is the correct technique for ABS emergency braking?",
+      "options": ["Pump the brake pedal", "Apply firm, continuous pressure", "Brake and steer alternately", "Release and reapply repeatedly"],
+      "correctAnswer": 1,
+      "explanation": "With ABS, apply firm, continuous pressure to the brake pedal and steer as needed - the system will prevent wheel lock."
+    },
+    {
+      "question": "What is threshold braking?",
+      "options": ["Braking at maximum force before lock-up", "Braking until wheels lock then releasing", "Gently applying brakes progressively", "Using the handbrake for emergencies"],
+      "correctAnswer": 0,
+      "explanation": "Threshold braking is applying maximum braking force just before wheel lock-up, providing optimal stopping distance on non-ABS vehicles."
+    },
+    {
+      "question": "What is the first step in evasive steering?",
+      "options": ["Check mirrors", "Look immediately where you want to go", "Sound the horn", "Brake firmly"],
+      "correctAnswer": 1,
+      "explanation": "The first step in evasive steering is to look where you want to go - the vehicle will follow your gaze direction."
+    },
+    {
+      "question": "What is the standard convoy gap at 80 km/h?",
+      "options": ["30 metres", "40 metres", "50 metres", "75 metres"],
+      "correctAnswer": 2,
+      "explanation": "The standard convoy gap at 80 km/h is 50 metres, providing safe following distance while maintaining convoy cohesion."
+    },
+    {
+      "question": "What is Position 1 in lane positioning?",
+      "options": ["Left of lane centre, normal driving", "Centre of lane", "Right of lane centre", "Hugging the kerb"],
+      "correctAnswer": 0,
+      "explanation": "Position 1 is left of lane centre, the normal driving position that provides best visibility and safety margin."
+    },
+    {
+      "question": "What is the primary role of the Lead Vehicle in a convoy?",
+      "options": ["Rear security", "Route management and speed setting", "Navigation only", "Communication with control"],
+      "correctAnswer": 1,
+      "explanation": "The Lead Vehicle manages the route, sets the pace, and makes decisions that the rest of the convoy follows."
+    },
+    {
+      "question": "What is the correct radio call format for a route change?",
+      "options": ["Route change now", "Callsign + junction + instruction", "New route: [destination]", "Follow me"],
+      "correctAnswer": 1,
+      "explanation": "Standard convoy radio format is: Callsign + junction/location + instruction, e.g., 'Alpha 1, approaching Junction 4, turn left'."
+    },
+    {
+      "question": "How early should an executive driver arrive at a collection point?",
+      "options": ["5 minutes", "7 minutes", "10-15 minutes early", "Exactly on time"],
+      "correctAnswer": 2,
+      "explanation": "Executive drivers should arrive 10-15 minutes early to conduct vehicle checks and be ready before the passenger arrives."
+    },
+    {
+      "question": "What is the professional standard for in-journey conversation?",
+      "options": ["Engage in friendly conversation", "Respond only if passenger speaks first", "Discuss current affairs", "Ask about the passenger's business"],
+      "correctAnswer": 1,
+      "explanation": "Professional executive drivers speak only when spoken to, respecting the passenger's privacy and preference for quiet."
+    },
+    {
+      "question": "What is the confidentiality standard for executive drivers?",
+      "options": ["Discuss with close colleagues only", "Everything is confidential - no exceptions", "Share if legally required", "Discuss anonymously"],
+      "correctAnswer": 1,
+      "explanation": "For executive drivers, everything seen or heard is strictly confidential with absolutely no exceptions."
+    },
+    {
+      "question": "What is the minimum number of vehicles in a standard VVIP convoy?",
+      "options": ["2", "3", "4", "5"],
+      "correctAnswer": 1,
+      "explanation": "A standard VVIP convoy consists of a minimum of 3 vehicles: lead, principal, and follow vehicles."
+    },
+    {
+      "question": "What is the primary purpose of varying routes in security operations?",
+      "options": ["Explore different scenery", "Avoid predictability - predictability is a vulnerability", "Test vehicle performance", "Train drivers on multiple routes"],
+      "correctAnswer": 1,
+      "explanation": "Varying routes prevents adversaries from predicting movements and planning attacks - predictability is a critical security vulnerability."
+    },
+    {
+      "question": "What is the correct response to a passenger giving a routing instruction?",
+      "options": ["Explain why your route is better", "Ignore and follow your planned route", "Say 'Understood' and follow unless safety concern", "Ask for written confirmation"],
+      "correctAnswer": 2,
+      "explanation": "Professional drivers acknowledge instructions with 'Understood' and follow them unless there is a clear safety concern."
+    },
+    {
+      "question": "What is the standard gap for the Follow vehicle in a VVIP convoy?",
+      "options": ["10-20m", "30-40m", "50-60m", "100m+"],
+      "correctAnswer": 1,
+      "explanation": "The Follow vehicle in a VVIP convoy maintains a 30-40 metre gap, close enough to respond but not too close to be caught in the same incident."
+    }
+  ]
+}

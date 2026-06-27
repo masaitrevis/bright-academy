@@ -1,0 +1,124 @@
+{
+  "questions": [
+    {
+      "question": "What does the 'O' in OODA stand for?",
+      "options": ["Observe", "Orient", "Operate", "Organise"],
+      "correctAnswer": 0,
+      "explanation": "OODA stands for Observe, Orient, Decide, Act - a decision cycle developed for combat operations that applies to tactical driving."
+    },
+    {
+      "question": "What does the 'D' in OODA stand for?",
+      "options": ["Detect", "Decide", "Defend", "Direct"],
+      "correctAnswer": 1,
+      "explanation": "The D in OODA stands for Decide - making a rapid decision based on observed information and orientation."
+    },
+    {
+      "question": "What is the primary purpose of the OODA loop in tactical driving?",
+      "options": ["To maintain vehicle speed", "To process information and act faster than the threat", "To communicate with convoy members", "To navigate unfamiliar routes"],
+      "correctAnswer": 1,
+      "explanation": "The OODA loop's purpose is to cycle through observe-orient-decide-act faster than adversaries, gaining a tactical advantage."
+    },
+    {
+      "question": "What is a 'threat' in the Risk vs Threat framework?",
+      "options": ["General possibility of harm", "Specific and identified danger", "Perceived but unreal danger", "Environmental condition"],
+      "correctAnswer": 1,
+      "explanation": "A threat is a specific and identified danger with intent and capability to cause harm, as opposed to general risk."
+    },
+    {
+      "question": "What is the far zone scan distance at 80 km/h?",
+      "options": ["100-200m", "200-330m", "330-660m", "660-1000m"],
+      "correctAnswer": 2,
+      "explanation": "The far zone scan at 80 km/h covers 330-660 metres ahead, identifying potential hazards and changes in road conditions."
+    },
+    {
+      "question": "How often should mirrors be checked in high-risk environments?",
+      "options": ["Every 5-8 seconds", "Every 3 seconds", "Every 10 seconds", "Once per minute"],
+      "correctAnswer": 1,
+      "explanation": "In high-risk environments, mirrors should be checked every 3 seconds to maintain constant awareness of the surroundings."
+    },
+    {
+      "question": "What is the first indicator of a criminal vs official checkpoint?",
+      "options": ["Road spikes visible", "Official identification and uniforms", "Vehicles blocking the road", "Weapons visible"],
+      "correctAnswer": 1,
+      "explanation": "Official checkpoints have clear identification, uniforms, and marked vehicles; criminal roadblocks lack these formal indicators."
+    },
+    {
+      "question": "What is the recommended action if a criminal roadblock is identified at 200+ metres?",
+      "options": ["Accelerate through the roadblock", "Stop, reverse, and reroute", "Approach slowly and negotiate", "Call for help while stopped"],
+      "correctAnswer": 1,
+      "explanation": "If a criminal roadblock is identified at sufficient distance (200m+), the immediate response is to stop, reverse, and find an alternative route."
+    },
+    {
+      "question": "What percentage of carjackings occur when the driver is in or entering the vehicle?",
+      "options": ["45%", "60%", "78%", "90%"],
+      "correctAnswer": 2,
+      "explanation": "78% of carjackings occur when the driver is in or entering the vehicle, highlighting the importance of vigilance during entry/exit."
+    },
+    {
+      "question": "What is the primary response to an ambush?",
+      "options": ["Exit the vehicle immediately", "Drive out of the kill zone immediately", "Return fire", "Call for backup while stationary"],
+      "correctAnswer": 1,
+      "explanation": "The primary response to an ambush is to drive out of the kill zone immediately - a stationary vehicle is a target."
+    },
+    {
+      "question": "What is the purpose of varying departure times and routes?",
+      "options": ["Avoid traffic congestion", "Deny surveillance teams planning data", "Test different vehicle routes", "Comply with insurance requirements"],
+      "correctAnswer": 1,
+      "explanation": "Varying times and routes denies hostile surveillance the predictable patterns they need to plan an attack."
+    },
+    {
+      "question": "What is a 'safe haven'?",
+      "options": ["Any police station", "A secure location reachable within 5-10 minutes", "The nearest hospital", "A crowded public area"],
+      "correctAnswer": 1,
+      "explanation": "A safe haven is a pre-identified secure location that can be reached within 5-10 minutes from any point on a route."
+    },
+    {
+      "question": "What is the minimum number of safe havens per route?",
+      "options": ["1", "2", "3", "5"],
+      "correctAnswer": 2,
+      "explanation": "Security protocols require a minimum of 3 safe havens identified along any regularly used route."
+    },
+    {
+      "question": "What is the correct response if a weapon is presented during a carjacking?",
+      "options": ["Accelerate away quickly", "Surrender the vehicle immediately", "Sound horn to attract attention", "Lock doors and refuse to exit"],
+      "correctAnswer": 1,
+      "explanation": "When a weapon is presented, surrender the vehicle immediately - no vehicle is worth a life."
+    },
+    {
+      "question": "What is the emergency number in Kenya?",
+      "options": ["911", "999 or 112", "101", "112 only"],
+      "correctAnswer": 1,
+      "explanation": "In Kenya, the emergency numbers are 999 (police/ambulance) and 112 (standard emergency number)."
+    },
+    {
+      "question": "What is a 'Vulnerable Point' (VP) on a route?",
+      "options": ["A location with heavy traffic", "Any location where speed, movement, or visibility is reduced", "A sharp bend in the road", "A school zone"],
+      "correctAnswer": 1,
+      "explanation": "A Vulnerable Point is any location where the vehicle's speed, movement options, or visibility are restricted, making it susceptible to attack."
+    },
+    {
+      "question": "What is the primary counter-surveillance role of a professional driver?",
+      "options": ["To evade followers aggressively", "To notice patterns and report unusual observations", "To install surveillance equipment", "To change routes randomly without reason"],
+      "correctAnswer": 1,
+      "explanation": "The driver's counter-surveillance role is to notice unusual patterns, repeated vehicles, or suspicious behaviour and report them."
+    },
+    {
+      "question": "What is the recommended action when unable to move during an ambush?",
+      "options": ["Stay inside the vehicle", "Exit on the side away from attackers, use vehicle as cover", "Exit toward the attackers to surprise them", "Lay flat on the floor"],
+      "correctAnswer": 1,
+      "explanation": "If unable to drive out of an ambush, exit on the side away from attackers and use the vehicle engine block as protective cover."
+    },
+    {
+      "question": "What is the 'baseline concept' in environmental scanning?",
+      "options": ["The normal appearance of an environment", "The maximum threat level expected", "The standard convoy formation", "The average traffic speed"],
+      "correctAnswer": 0,
+      "explanation": "The baseline concept means knowing what 'normal' looks like for a given environment so that abnormalities stand out immediately."
+    },
+    {
+      "question": "What is the professional response to an aggressive officer at a checkpoint?",
+      "options": ["Match their energy to assert authority", "Remain calm, polite, compliant - do not match their energy", "Refuse to cooperate until they calm down", "Request to speak to their supervisor immediately"],
+      "correctAnswer": 1,
+      "explanation": "The professional response is to remain calm, polite, and compliant - de-escalation is the priority, never match aggression."
+    }
+  ]
+}

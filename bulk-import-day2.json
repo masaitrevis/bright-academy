@@ -1,0 +1,124 @@
+{
+  "questions": [
+    {
+      "question": "What is the total stopping distance at 100 km/h on dry roads?",
+      "options": ["85m", "100m", "120m", "150m"],
+      "correctAnswer": 2,
+      "explanation": "At 100 km/h on dry roads, the total stopping distance (reaction + braking) is approximately 120 metres."
+    },
+    {
+      "question": "What happens to weight distribution when braking?",
+      "options": ["Shifts rearward", "Shifts forward", "Remains balanced", "Shifts to the left"],
+      "correctAnswer": 1,
+      "explanation": "During braking, weight transfers forward onto the front wheels, increasing front tyre grip and reducing rear grip."
+    },
+    {
+      "question": "What is the most common loss of control in FWD vehicles?",
+      "options": ["Oversteer", "Understeer", "Snap oversteer", "Power-on oversteer"],
+      "correctAnswer": 1,
+      "explanation": "Front-wheel-drive vehicles typically exhibit understeer (plowing wide) as the most common loss of control."
+    },
+    {
+      "question": "What is the correct recovery for understeer?",
+      "options": ["Apply more steering input", "Reduce steering slightly, ease off throttle", "Brake hard and counter-steer", "Accelerate to pull the front end in"],
+      "correctAnswer": 1,
+      "explanation": "To recover from understeer, reduce steering input slightly and ease off the throttle to allow front tyres to regain grip."
+    },
+    {
+      "question": "What is the correct recovery for oversteer?",
+      "options": ["Brake hard immediately", "Counter-steer in direction of slide", "Steer away from the slide", "Apply full throttle"],
+      "correctAnswer": 1,
+      "explanation": "Oversteer recovery requires counter-steering in the direction of the slide (into the skid) to balance the vehicle."
+    },
+    {
+      "question": "At what speed does aquaplaning risk increase sharply?",
+      "options": ["50 km/h", "60 km/h", "70 km/h", "90 km/h"],
+      "correctAnswer": 2,
+      "explanation": "Aquaplaning risk increases sharply at speeds above 70 km/h as tyres cannot displace water fast enough to maintain road contact."
+    },
+    {
+      "question": "What is the first response to aquaplaning?",
+      "options": ["Brake firmly to slow down", "Steer aggressively to find grip", "Ease off accelerator, hold steering lightly", "Accelerate to push through the water"],
+      "correctAnswer": 2,
+      "explanation": "When aquaplaning, ease off the accelerator and hold the steering lightly until tyres regain contact with the road surface."
+    },
+    {
+      "question": "What does the 'I' in IPSGA stand for?",
+      "options": ["Information", "Identify", "Inspect", "Intervene"],
+      "correctAnswer": 0,
+      "explanation": "IPSGA stands for Information, Position, Speed, Gear, Acceleration - the systematic approach to hazard management."
+    },
+    {
+      "question": "What does the 'S' in IPSGA stand for?",
+      "options": ["Signal", "Speed", "Stop", "Scan"],
+      "correctAnswer": 1,
+      "explanation": "In the IPSGA system, S stands for Speed - adjusting vehicle speed appropriately for the hazard."
+    },
+    {
+      "question": "What is the recommended following gap on wet roads?",
+      "options": ["3 seconds", "4 seconds", "6 seconds", "8 seconds"],
+      "correctAnswer": 2,
+      "explanation": "On wet roads, the following gap should be doubled to 6 seconds to account for reduced traction and longer stopping distances."
+    },
+    {
+      "question": "What is the minimum recommended tyre tread depth for professional fleets?",
+      "options": ["1.6mm", "2.0mm", "3.0mm", "4.0mm"],
+      "correctAnswer": 2,
+      "explanation": "Professional fleets should maintain a minimum of 3.0mm tread depth for optimal safety and performance."
+    },
+    {
+      "question": "What percentage of peripheral vision is lost at night?",
+      "options": ["30%", "50%", "70%", "90%"],
+      "correctAnswer": 2,
+      "explanation": "At night, approximately 70% of peripheral vision is lost due to reduced light levels, significantly narrowing the field of view."
+    },
+    {
+      "question": "What is the primary rule for motorway lane discipline?",
+      "options": ["Keep left unless overtaking", "Use any lane freely", "Drive in the centre lane for safety", "Overtake on either side"],
+      "correctAnswer": 0,
+      "explanation": "The primary rule is to keep left unless overtaking, returning to the left lane after completing the manoeuvre."
+    },
+    {
+      "question": "What is the correct following distance at 100 km/h in dry conditions?",
+      "options": ["50m (2 seconds)", "83m (3 seconds)", "100m (4 seconds)", "120m (5 seconds)"],
+      "correctAnswer": 1,
+      "explanation": "At 100 km/h, a 3-second gap equals approximately 83 metres, providing adequate reaction and braking distance."
+    },
+    {
+      "question": "What is the effect of doubling speed on stopping distance?",
+      "options": ["Doubles", "Triples", "Quadruples", "Increases by 50%"],
+      "correctAnswer": 2,
+      "explanation": "Stopping distance quadruples when speed doubles because kinetic energy increases with the square of velocity."
+    },
+    {
+      "question": "What is the recommended action when driving through shallow water?",
+      "options": ["Maintain speed to create a bow wave", "Reduce speed, use low gear, drive slowly", "Stop and reverse to avoid damage", "Accelerate to clear the water quickly"],
+      "correctAnswer": 1,
+      "explanation": "When driving through shallow water, reduce speed, select a low gear, and drive slowly to maintain control and avoid aquaplaning."
+    },
+    {
+      "question": "What is the primary cause of rear-wheel lock during hard braking?",
+      "options": ["Weight shifting forward", "Brake fluid leak", "Rear brake bias", "Worn rear tyres"],
+      "correctAnswer": 0,
+      "explanation": "During hard braking, weight shifts forward, reducing rear tyre grip and causing rear wheels to lock more easily."
+    },
+    {
+      "question": "What is the recommended rest stop frequency on long journeys?",
+      "options": ["Every 1 hour", "Every 1.5 hours", "Every 2 hours", "Every 3 hours"],
+      "correctAnswer": 2,
+      "explanation": "Professional drivers should take a break every 2 hours on long journeys to maintain alertness and reduce fatigue."
+    },
+    {
+      "question": "What is the primary danger of driving in fog with main beam headlights?",
+      "options": ["Draining the battery quickly", "Main beam reflects off fog, reducing visibility", "Blinding other drivers", "Overheating the headlight units"],
+      "correctAnswer": 1,
+      "explanation": "Main beam headlights reflect off fog particles, creating a glare that actually reduces visibility in foggy conditions."
+    },
+    {
+      "question": "What is the urban speed at which pedestrian survival drops below 30%?",
+      "options": ["50 km/h", "60 km/h", "70 km/h", "80 km/h"],
+      "correctAnswer": 2,
+      "explanation": "At 70 km/h, the survival rate for struck pedestrians drops below 30%, making this speed critical for urban areas."
+    }
+  ]
+}
