@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import FileViewer from "@/app/components/FileViewer";
 import {
   Plus,
   Loader2,
@@ -126,6 +127,11 @@ export default function AdminPage() {
   const [bulkImportText, setBulkImportText] = useState("");
   const [bulkParsedQuestions, setBulkParsedQuestions] = useState<any[]>([]);
   const [bulkImportErrors, setBulkImportErrors] = useState<string[]>([]);
+  const [viewerFile, setViewerFile] = useState<{
+    url: string;
+    fileName?: string;
+    fileType?: string;
+  } | null>(null);
 
   const [adminToken, setAdminToken] = useState<string | null>(null);
 
@@ -1129,15 +1135,19 @@ export default function AdminPage() {
                             {mod.type === "text" ? (
                               <p className="text-xs text-[#94a3b8] mt-1 line-clamp-2">{mod.content}</p>
                             ) : mod.type === "file" ? (
-                              <a
-                                href={`/api/view/file?trainingId=${selectedTraining?.id}&moduleId=${mod.id}&token=${localStorage.getItem("admin_token") || ""}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
+                              <button
+                                onClick={() =>
+                                  setViewerFile({
+                                    url: `/api/view/file?trainingId=${selectedTraining?.id}&moduleId=${mod.id}&token=${localStorage.getItem("admin_token") || ""}`,
+                                    fileName: mod.fileName,
+                                    fileType: mod.fileType,
+                                  })
+                                }
                                 className="text-xs text-[#d4af37] hover:underline mt-1 flex items-center space-x-1"
                               >
                                 <Eye className="w-3 h-3" />
                                 <span>{mod.fileName || "View document"}</span>
-                              </a>
+                              </button>
                             ) : (
                               <a
                                 href={mod.content}
@@ -1438,6 +1448,14 @@ export default function AdminPage() {
           </div>
         )}
       </main>
+      {viewerFile && (
+        <FileViewer
+          url={viewerFile.url}
+          fileName={viewerFile.fileName}
+          fileType={viewerFile.fileType}
+          onClose={() => setViewerFile(null)}
+        />
+      )}
     </div>
   );
 }
