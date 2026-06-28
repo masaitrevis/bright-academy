@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { X, Loader2, FileText, AlertTriangle } from "lucide-react";
+import { useState, useEffect } from "react";
+import { X, Loader2, FileText, AlertTriangle, FileSpreadsheet } from "lucide-react";
 
 interface FileViewerProps {
   url: string;
@@ -13,9 +13,39 @@ interface FileViewerProps {
 export default function FileViewer({ url, fileName, fileType, onClose }: FileViewerProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [blobUrl, setBlobUrl] = useState<string | null>(null);
 
   const isPdf = fileType === "application/pdf";
-  const isOffice = fileType?.includes("presentation") || fileType?.includes("word");
+  const isOffice = fileType?.includes("presentation") || fileType?.includes("word") || fileType?.includes("officedocument");
+
+  useEffect(() => {
+    let objectUrl: string | null = null;
+
+    const fetchFile = async () => {
+      try {
+        setLoading(true);
+        setError(false);
+
+        const res = await fetch(url);
+        if (!res.ok) throw new Error("Failed to load file");
+
+        const blob = await res.blob();
+        objectUrl = URL.createObjectURL(blob);
+        setBlobUrl(objectUrl);
+        setLoading(false);
+      } catch (err) {
+        console.error("File load error:", err);
+        setError(true);
+        setLoading(false);
+      }
+    };
+
+    fetchFile();
+
+    return () => {
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+    };
+  }, [url]);
 
   return (
     <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
@@ -53,34 +83,68 @@ export default function FileViewer({ url, fileName, fileType, onClose }: FileVie
             </div>
           )}
 
-          {isOffice && (
-            <div className="absolute top-0 left-0 right-0 bg-orange-500/10 border-b border-orange-500/20 p-3">
-              <div className="flex items-center space-x-2 text-orange-400 text-sm">
-                <AlertTriangle className="w-4 h-4 flex-shrink-0" />
-                <span>
-                  PowerPoint/Word documents require a desktop viewer. The file will open in your browser's default application.
-                </span>
-              </div>
-            </div>
-          )}
-
-          <iframe
-            src={url}
-            className={`w-full h-full border-0 ${isOffice ? "mt-14" : ""}`}
-            onLoad={() => setLoading(false)}
-            onError={() => {
-              setLoading(false);
-              setError(true);
-            }}
-            title={fileName || "Document"}
-          />
-
           {error && (
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="text-center">
                 <AlertTriangle className="w-10 h-10 text-red-400 mx-auto mb-3" />
                 <p className="text-sm text-red-400">Failed to load document</p>
                 <p className="text-xs text-[#64748b] mt-1">Try refreshing the page</p>
+              </div>
+            </div>
+          )}
+
+          {/* PDF: embed with toolbar hidden — forces inline viewing, no download button */}
+          {blobUrl && isPdf && !error && (
+            <embed
+              src={`${blobUrl}#toolbar=0&navpanes=0&scrollbar=1`}
+              type="application/pdf"
+              width="100%"
+              height="100%"
+              className="border-0"
+              title={fileName || "PDF Document"}
+              onLoad={() => setLoading(false)}
+            />
+          )}
+
+          {/* Office docs: cannot be rendered inline securely in browsers */}
+          {blobUrl && isOffice && !error && (
+            <div className="absolute inset-0 flex items-center justify-center p-8">
+              <div className="bg-[#1e293b] border border-orange-500/30 rounded-xl p-8 max-w-md text-center">
+                <FileSpreadsheet className="w-12 h-12 text-orange-400 mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-white mb-2">
+                  View-Only Not Available
+                </h3>
+                <p className="text-sm text-[#94a3b8] mb-4">
+                  PowerPoint and Word files cannot be displayed securely in a web browser.
+                  Browsers automatically download these file types instead of showing them inline.
+                </p>
+                <div className="bg-orange-500/10 border border-orange-500/20 rounded-lg p-4 mb-4">
+                  <p className="text-sm text-orange-300 font-medium mb-1">
+                    For View-Only Training Materials:
+                  </p>
+                  <p className="text-sm text-[#94a3b8]">
+                    Please convert this document to <strong className="text-white">PDF format</strong> and re-upload it.
+                    PDFs can be displayed inline without downloading.
+                  </p>
+                </div>
+                <p className="text-xs text-[#64748b]">
+                  This protects your paid training content from being downloaded.
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* Fallback for unknown file types */}
+          {blobUrl && !isPdf && !isOffice && !error && (
+            <div className="absolute inset-0 flex items-center justify-center p-8">
+              <div className="bg-[#1e293b] border border-[#334155] rounded-xl p-8 max-w-md text-center">
+                <AlertTriangle className="w-12 h-12 text-[#94a3b8] mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-white mb-2">
+                  Unsupported File Type
+                </h3>
+                <p className="text-sm text-[#94a3b8]">
+                  This file type cannot be displayed. Please upload PDF files for view-only training materials.
+                </p>
               </div>
             </div>
           )}
