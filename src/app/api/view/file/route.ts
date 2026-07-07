@@ -1,28 +1,27 @@
 import { NextRequest, NextResponse } from "next/server";
 import { pool, isDbConnected } from "@/app/lib/server-db";
-import { jwtVerify } from "jose";
-
-const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || "bright-academy-jwt-secret-2024"
-);
 
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
 
-    // Verify user token (from header or query param for browser navigation)
     const authHeader = req.headers.get("authorization");
     const queryToken = searchParams.get("token");
     let userId: string | null = null;
 
     const tokenToVerify = authHeader?.startsWith("Bearer ") ? authHeader.split(" ")[1] : queryToken;
 
-    if (tokenToVerify) {
+    if (tokenToVerify && pool && (await isDbConnected())) {
       try {
-        const { payload } = await jwtVerify(tokenToVerify, JWT_SECRET, { clockTolerance: 60 });
-        userId = (payload as any).id || (payload as any).userId || null;
+        const sessionResult = await pool.query(
+          "SELECT user_id FROM sessions WHERE token = $1 AND expires_at > NOW()",
+          [tokenToVerify]
+        );
+        if (sessionResult.rows.length > 0) {
+          userId = sessionResult.rows[0].user_id;
+        }
       } catch {
-        // Invalid token
+        // Invalid session
       }
     }
 
@@ -37,16 +36,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: "Database not connected" }, { status: 500 });
     }
 
-    // Check enrollment if user is logged in
-    if (userId) {
-      const enrollRes = await pool.query(
-        "SELECT paid FROM enrollments WHERE user_id = $1 AND training_id = $2",
-        [userId, parseInt(trainingId)]
-      );
-      // Allow viewing if enrolled and paid (or training is free — checked below)
-    }
-
-    // Get the training content
+    // Get training
     const result = await pool.query(
       "SELECT content, is_free FROM trainings WHERE id = $1",
       [parseInt(trainingId)]
@@ -64,15 +54,18 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: "Module not found" }, { status: 404 });
     }
 
-    // Check if user has access
+    // Check access: free trainings allow anyone, paid require enrollment + payment
     const isFree = training.is_free;
-    if (!isFree && userId) {
+    if (!isFree) {
+      if (!userId) {
+        return NextResponse.json({ error: "Access denied — please log in" }, { status: 403 });
+      }
       const enrollRes = await pool.query(
         "SELECT paid FROM enrollments WHERE user_id = $1 AND training_id = $2",
         [userId, parseInt(trainingId)]
       );
       if (enrollRes.rows.length === 0 || !enrollRes.rows[0].paid) {
-        return NextResponse.json({ error: "Access denied" }, { status: 403 });
+        return NextResponse.json({ error: "Access denied — payment required" }, { status: 403 });
       }
     }
 
@@ -91,7 +84,6 @@ export async function GET(req: NextRequest) {
     const base64Data = match[2];
     const buffer = Buffer.from(base64Data, "base64");
 
-    // Map MIME types to file extensions for Content-Disposition
     const extMap: Record<string, string> = {
       "application/pdf": "pdf",
       "application/vnd.openxmlformats-officedocument.presentationml.presentation": "pptx",
@@ -102,7 +94,6 @@ export async function GET(req: NextRequest) {
     const ext = extMap[mimeType] || "bin";
     const fileName = module.fileName || `document.${ext}`;
 
-    // Serve inline (not as attachment) — browser will try to render or use built-in viewer
     return new NextResponse(buffer, {
       status: 200,
       headers: {

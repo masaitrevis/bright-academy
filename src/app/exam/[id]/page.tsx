@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import {
@@ -24,65 +24,118 @@ export default function ExamPage() {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [result, setResult] = useState<any>(null);
   const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
   const [examStarted, setExamStarted] = useState(false);
 
+  // Refs to avoid stale closures in timer
+  const resultRef = useRef(result);
+  const examStartedRef = useRef(examStarted);
+  const answersRef = useRef(answers);
+  const questionsRef = useRef(questions);
+  const submittingRef = useRef(submitting);
+
+  useEffect(() => { resultRef.current = result; }, [result]);
+  useEffect(() => { examStartedRef.current = examStarted; }, [examStarted]);
+  useEffect(() => { answersRef.current = answers; }, [answers]);
+  useEffect(() => { questionsRef.current = questions; }, [questions]);
+  useEffect(() => { submittingRef.current = submitting; }, [submitting]);
+
+  const fetchQuestions = useCallback(async (token: string, userId: string) => {
+    try {
+      const res = await fetch(`/api/trainings/${params.id}/exam?userId=${userId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        setQuestions(data.questions || []);
+        setExamStarted(true);
+        if (data.timeRemaining && data.timeRemaining > 0) {
+          setTimeRemaining(data.timeRemaining);
+        }
+        setError(null);
+      } else if (data.error === "Time limit exceeded") {
+        setResult({
+          score: 0,
+          passed: false,
+          locked: false,
+          attempts: data.attempts,
+          maxAttempts: data.maxAttempts,
+          timeExpired: true,
+        });
+      } else if (data.error === "Already passed") {
+        setError("You have already passed this exam. View your certificate from the dashboard.");
+      } else if (data.error === "Maximum attempts reached") {
+        setError("You have used all exam attempts for this training.");
+      } else if (data.error === "Not enrolled") {
+        setError("You are not enrolled in this training. Please enroll first.");
+      } else {
+        setError(data.error || "Failed to load exam questions.");
+      }
+    } catch (err: any) {
+      setError(err.message || "Network error loading exam.");
+    } finally {
+      setLoading(false);
+    }
+  }, [params.id]);
+
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (!token) {
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+
+    if (!token || !user.id) {
       router.push("/login");
       return;
     }
-    fetchQuestions(token);
-  }, [params.id, router]);
 
+    fetchQuestions(token, user.id);
+  }, [params.id, router, fetchQuestions]);
+
+  // Timer effect — stable deps, no re-create every second
   useEffect(() => {
     if (timeRemaining === null || timeRemaining <= 0) return;
+
     const interval = setInterval(() => {
       setTimeRemaining((prev) => {
         if (prev === null || prev <= 1) {
           clearInterval(interval);
-          if (!result && examStarted) {
-            handleSubmit();
+          // Auto-submit when time runs out (using refs to avoid stale closure)
+          if (!resultRef.current && examStartedRef.current && !submittingRef.current) {
+            const currentAnswers = answersRef.current;
+            const currentQuestions = questionsRef.current;
+            if (Object.keys(currentAnswers).length >= currentQuestions.length && currentQuestions.length > 0) {
+              submitExam(currentAnswers, currentQuestions);
+            } else {
+              setResult({
+                score: 0,
+                passed: false,
+                locked: false,
+                attempts: 0,
+                maxAttempts: 3,
+                timeExpired: true,
+              });
+            }
           }
           return 0;
         }
         return prev - 1;
       });
     }, 1000);
+
     return () => clearInterval(interval);
-  }, [timeRemaining, examStarted, result]);
+  }, [timeRemaining]); // only re-run when timeRemaining is initially set
 
-  const fetchQuestions = async (token: string) => {
-    try {
-      const res = await fetch(`/api/trainings/${params.id}/exam`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await res.json();
-      if (data.success) {
-        setQuestions(data.questions);
-        setExamStarted(true);
-        if (data.timeRemaining && data.timeRemaining > 0) {
-          setTimeRemaining(data.timeRemaining);
-        }
-      } else if (data.error === "Time limit exceeded") {
-        setResult({ score: 0, passed: false, locked: false, attempts: data.attempts, maxAttempts: data.maxAttempts, timeExpired: true });
-      }
-    } catch (error) {
-      console.error("Failed to fetch questions:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const submitExam = async (
+    currentAnswers?: Record<number, number>,
+    currentQuestions?: Question[]
+  ) => {
+    const ans = currentAnswers ?? answers;
+    const qs = currentQuestions ?? questions;
 
-  const handleAnswer = (questionId: number, optionIndex: number) => {
-    setAnswers((prev) => ({ ...prev, [questionId]: optionIndex }));
-  };
-
-  const handleSubmit = async () => {
-    if (Object.keys(answers).length < questions.length) {
+    if (Object.keys(ans).length < qs.length) {
       alert("Please answer all questions before submitting.");
       return;
     }
@@ -92,7 +145,7 @@ export default function ExamPage() {
       const token = localStorage.getItem("token");
       const user = JSON.parse(localStorage.getItem("user") || "{}");
 
-      const formattedAnswers = Object.entries(answers).map(([questionId, selectedAnswer]) => ({
+      const formattedAnswers = Object.entries(ans).map(([questionId, selectedAnswer]) => ({
         questionId: parseInt(questionId),
         selectedAnswer,
       }));
@@ -113,17 +166,53 @@ export default function ExamPage() {
       if (data.success || data.error) {
         setResult(data);
       }
-    } catch (error: any) {
-      alert(error.message || "Failed to submit exam");
+    } catch (err: any) {
+      alert(err.message || "Failed to submit exam");
     } finally {
       setSubmitting(false);
     }
   };
 
+  const handleAnswer = (questionId: number, optionIndex: number) => {
+    setAnswers((prev) => ({ ...prev, [questionId]: optionIndex }));
+  };
+
+  const handleSubmit = () => submitExam();
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#0f172a]">
         <Loader2 className="w-8 h-8 animate-spin text-[#d4af37]" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-[#0f172a] text-[#e2e8f0]">
+        <header className="bg-[#1e293b] border-b border-[#334155]">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center h-16">
+              <Link href="/dashboard" className="flex items-center text-[#94a3b8] hover:text-white transition-colors">
+                <ArrowLeft className="w-5 h-5 mr-2" />
+                Back to Dashboard
+              </Link>
+            </div>
+          </div>
+        </header>
+        <div className="max-w-2xl mx-auto px-4 py-12">
+          <div className="bg-[#1e293b] rounded-xl shadow-lg border border-[#334155] p-8 text-center">
+            <AlertCircle className="w-16 h-16 text-[#d4af37] mx-auto mb-4" />
+            <h1 className="text-2xl font-bold text-white mb-2">Exam Unavailable</h1>
+            <p className="text-[#94a3b8] mb-6">{error}</p>
+            <Link
+              href="/dashboard"
+              className="inline-block bg-[#d4af37] text-[#0f172a] px-8 py-3 rounded-lg font-semibold hover:bg-[#b8960b] transition-colors"
+            >
+              Back to Dashboard
+            </Link>
+          </div>
+        </div>
       </div>
     );
   }
@@ -136,7 +225,7 @@ export default function ExamPage() {
             {result.timeExpired ? (
               <>
                 <Clock className="w-16 h-16 text-[#d4af37] mx-auto mb-4" />
-                <h1 className="text-2xl font-bold text-white mb-2">Time's Up!</h1>
+                <h1 className="text-2xl font-bold text-white mb-2">Time&apos;s Up!</h1>
                 <p className="text-[#94a3b8] mb-6">
                   The exam time limit was reached. Your attempt has been recorded.
                 </p>
@@ -233,6 +322,13 @@ export default function ExamPage() {
           </div>
         </div>
 
+        {questions.length === 0 && (
+          <div className="bg-[#1e293b] rounded-xl shadow-lg border border-[#334155] p-8 text-center">
+            <AlertCircle className="w-12 h-12 text-[#d4af37] mx-auto mb-4" />
+            <p className="text-[#94a3b8]">No questions available for this exam yet.</p>
+          </div>
+        )}
+
         <div className="space-y-6">
           {questions.map((q, index) => (
             <div key={q.id} className="bg-[#1e293b] rounded-xl shadow-lg border border-[#334155] p-6">
@@ -266,7 +362,7 @@ export default function ExamPage() {
         <div className="mt-8 flex justify-center">
           <button
             onClick={handleSubmit}
-            disabled={submitting || Object.keys(answers).length < questions.length}
+            disabled={submitting || Object.keys(answers).length < questions.length || questions.length === 0}
             className="bg-[#d4af37] text-[#0f172a] px-8 py-3 rounded-lg font-semibold hover:bg-[#b8960b] transition-colors disabled:opacity-50 flex items-center space-x-2"
           >
             {submitting ? (
